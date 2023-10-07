@@ -15,6 +15,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+    - uses: swift-actions/setup-swift@v1
+    - name: Get swift version
+      run: swift --version # Swift 5.9
     - uses: actions/checkout@v3
     - name: Build
       run: swift build -v
