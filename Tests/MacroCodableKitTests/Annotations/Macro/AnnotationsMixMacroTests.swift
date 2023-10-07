@@ -36,7 +36,7 @@ final class AnnotationsMixMacroTests: XCTestCase {
                     let boolean2: Bool?
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct DefaultValueBool {
                     let boolean1: Bool

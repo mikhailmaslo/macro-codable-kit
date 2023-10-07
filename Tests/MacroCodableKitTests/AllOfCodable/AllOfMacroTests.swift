@@ -28,7 +28,7 @@
                     @AllOfCodable
                     enum A {}
                     """
-                } matches: {
+                } diagnostics: {
                     """
                     @AllOfCodable
                     ┬────────────
@@ -45,7 +45,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A {
                         let brand: Brand
@@ -74,7 +74,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Encodable {
                         let brand: Brand
@@ -99,7 +99,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A {
                         let brand: Brand?
@@ -128,7 +128,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Decodable {
                         let brand: Brand
@@ -152,7 +152,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Codable {
                         let brand: Brand
@@ -169,7 +169,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     public struct A {
                         let brand: Brand
@@ -198,7 +198,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -228,7 +228,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -257,7 +257,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -288,7 +288,7 @@
                     @AllOfDecodable
                     enum A {}
                     """
-                } matches: {
+                } diagnostics: {
                     """
                     @AllOfDecodable
                     ┬──────────────
@@ -305,7 +305,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A {
                         let brand: Brand
@@ -330,7 +330,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Encodable {
                         let brand: Brand
@@ -355,7 +355,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Decodable {
                         let brand: Brand
@@ -372,7 +372,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Codable {
                         let brand: Brand
@@ -389,7 +389,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     public struct A {
                         let brand: Brand
@@ -414,7 +414,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -440,7 +440,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -466,7 +466,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -495,7 +495,7 @@
                     @AllOfEncodable
                     enum A {}
                     """
-                } matches: {
+                } diagnostics: {
                     """
                     @AllOfEncodable
                     ┬──────────────
@@ -512,7 +512,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A {
                         let brand: Brand
@@ -536,7 +536,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Encodable {
                         let brand: Brand
@@ -553,7 +553,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Decodable {
                         let brand: Brand
@@ -577,7 +577,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     struct A: Codable {
                         let brand: Brand
@@ -594,7 +594,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     public struct A {
                         let brand: Brand
@@ -618,7 +618,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -643,7 +643,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand
@@ -668,7 +668,7 @@
                         let company: Company
                     }
                     """
-                } matches: {
+                } expansion: {
                     """
                     private struct A {
                         let brand: Brand

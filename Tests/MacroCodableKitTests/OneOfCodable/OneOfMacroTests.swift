@@ -26,7 +26,7 @@ final class OneOfMacroTests: XCTestCase {
                 @OneOfCodable
                 struct A {}
                 """
-            } matches: {
+            } diagnostics: {
                 """
                 @OneOfCodable
                 ┬────────────
@@ -44,7 +44,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Encodable {
                     case int(Int)
@@ -87,7 +87,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Decodable {
                     case int(Int)
@@ -125,7 +125,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Codable {
                     case int(Int)
@@ -144,7 +144,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Encodable, Decodable {
                     case int(Int)
@@ -163,7 +163,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 private enum A {
                     case int(Int)
@@ -217,7 +217,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public enum A {
                     case int(Int)
@@ -276,7 +276,7 @@ final class OneOfMacroTests: XCTestCase {
                 @OneOfDecodable
                 struct A {}
                 """
-            } matches: {
+            } diagnostics: {
                 """
                 @OneOfDecodable
                 ┬──────────────
@@ -294,7 +294,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Encodable {
                     case int(Int)
@@ -337,7 +337,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Decodable {
                     case int(Int)
@@ -356,7 +356,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Codable {
                     case int(Int)
@@ -375,7 +375,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Encodable, Decodable {
                     case int(Int)
@@ -394,7 +394,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 private enum A {
                     case int(Int)
@@ -437,7 +437,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public enum A {
                     case int(Int)
@@ -485,7 +485,7 @@ final class OneOfMacroTests: XCTestCase {
                 @OneOfEncodable
                 struct A {}
                 """
-            } matches: {
+            } diagnostics: {
                 """
                 @OneOfEncodable
                 ┬──────────────
@@ -503,7 +503,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Encodable {
                     case int(Int)
@@ -522,7 +522,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Decodable {
                     case int(Int)
@@ -560,7 +560,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Codable {
                     case int(Int)
@@ -579,7 +579,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 enum A: Encodable, Decodable {
                     case int(Int)
@@ -598,7 +598,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 private enum A {
                     case int(Int)
@@ -636,7 +636,7 @@ final class OneOfMacroTests: XCTestCase {
                     case string(String)
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public enum A {
                     case int(Int)
