@@ -20,7 +20,7 @@ extension AllOfDecodableMacro: ExtensionMacro {
         conformingTo _: [TypeSyntax],
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
-        try withMacro(Self.self) {
+        try withMacro(Self.self, in: context) {
             let existingConformances = Conformance.makeConformances(declaration: declaration)
             let neededConformances = expectedConformances.subtracting(existingConformances)
             return try AllOfMacroBase.expansion(
