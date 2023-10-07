@@ -10,12 +10,6 @@ import SwiftSyntax
 
 extension OneOfMacroBase {
     final class Expander {
-        private let codableFactory: CodableBuilderFactory
-
-        init(codableFactory: CodableBuilderFactory) {
-            self.codableFactory = codableFactory
-        }
-
         func ensureEnumDecl(declaration: some DeclGroupSyntax) -> Enum? {
             Enum(declaration)
         }

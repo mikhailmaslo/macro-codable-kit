@@ -26,7 +26,7 @@ public enum OneOfMacroBase {
         domain = Macro.domain
         name = Macro.name
 
-        let expander = Expander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .codingKeys))
+        let expander = Expander()
 
         guard let enumDecl = expander.ensureEnumDecl(declaration: declaration) else {
             context.diagnose(Diagnostic.requiresEnum.diagnose(at: node))
