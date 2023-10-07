@@ -32,7 +32,7 @@ final class CustomCodingMacroTests: XCTestCase {
                     let safeStrings: [String]
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct SafeCodingArray1: Equatable {
                     let strings: [String]
@@ -72,7 +72,7 @@ final class CustomCodingMacroTests: XCTestCase {
                     let safeStrings: [String]?
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct SafeCodingArray2: Equatable {
                     @CustomCoding(SafeDecoding)
@@ -109,7 +109,7 @@ final class CustomCodingMacroTests: XCTestCase {
                     let safeStringByInt: [Int: String]
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct SafeCodingDictionary2 {
                     let stringByInt: [Int: String]
@@ -151,7 +151,7 @@ final class CustomCodingMacroTests: XCTestCase {
                     let safeIntByString: [String: Int]?
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct SafeCodingDictionary3 {
                     let intByString: [String: Int]
@@ -191,7 +191,7 @@ final class CustomCodingMacroTests: XCTestCase {
                     let someType: SomeType?
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct SomeTypeCustomCoding {
                     @CustomCoding(XXXX)

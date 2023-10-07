@@ -28,7 +28,7 @@ final class CodableMacroTests: XCTestCase {
                 @Codable
                 enum A {}
                 """
-            } matches: {
+            } diagnostics: {
                 """
                 @Codable
                 ┬───────
@@ -45,7 +45,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Encodable {
                     let brand: Brand
@@ -74,7 +74,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Decodable {
                     let brand: Brand
@@ -103,7 +103,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Codable {
                     let brand: Brand
@@ -120,7 +120,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Encodable, Decodable {
                     let brand: Brand
@@ -138,7 +138,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 private struct A {
                     let brand: Brand
@@ -170,7 +170,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public struct A {
                     let brand: Brand
@@ -206,7 +206,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 internal struct A: Encodable {
                     let brand: Brand?
@@ -233,7 +233,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public struct A {
                     var string: String { "" }
@@ -265,7 +265,7 @@ final class CodableMacroTests: XCTestCase {
                     var string2: String { "" }
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public struct A {
                     var string1: String { "" }
@@ -301,7 +301,7 @@ final class CodableMacroTests: XCTestCase {
                 @Encodable
                 enum A {}
                 """
-            } matches: {
+            } diagnostics: {
                 """
                 @Encodable
                 ┬─────────
@@ -318,7 +318,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Encodable {
                     let brand: Brand
@@ -335,7 +335,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Decodable {
                     let brand: Brand
@@ -364,7 +364,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Codable {
                     let brand: Brand
@@ -381,7 +381,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Encodable, Decodable {
                     let brand: Brand
@@ -399,7 +399,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 private struct A {
                     let brand: Brand
@@ -427,7 +427,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public struct A {
                     let brand: Brand
@@ -458,7 +458,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 internal struct A: Encodable {
                     let brand: Brand?
@@ -483,7 +483,7 @@ final class CodableMacroTests: XCTestCase {
                 @Decodable
                 enum A {}
                 """
-            } matches: {
+            } diagnostics: {
                 """
                 @Decodable
                 ┬─────────
@@ -500,7 +500,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Encodable {
                     let brand: Brand
@@ -529,7 +529,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Decodable {
                     let brand: Brand
@@ -546,7 +546,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Codable {
                     let brand: Brand
@@ -563,7 +563,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Encodable, Decodable {
                     let brand: Brand
@@ -581,7 +581,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 private struct A {
                     let brand: Brand
@@ -609,7 +609,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 public struct A {
                     let brand: Brand
@@ -639,7 +639,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 internal struct A: Encodable {
                     let brand: Brand?
@@ -679,7 +679,7 @@ final class CodableMacroTests: XCTestCase {
                     let company: Company
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A: Encodable {
                     @available(*, iOS)

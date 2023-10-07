@@ -35,7 +35,7 @@ final class ValueStrategyMacroTests: XCTestCase {
                     let data: Data?
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct Base64Struct {
                     let data: Data

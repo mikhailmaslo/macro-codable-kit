@@ -40,7 +40,7 @@ final class DefaultValueMacroTests: XCTestCase {
                     let boolean5: Bool?
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct DefaultValueBool {
                     let boolean1: Bool
@@ -109,7 +109,7 @@ final class DefaultValueMacroTests: XCTestCase {
                     let int4: Int?
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct DefaultValueInt {
                     let int1: Int
@@ -167,7 +167,7 @@ final class DefaultValueMacroTests: XCTestCase {
                     let string: String
                 }
                 """
-            } matches: {
+            } expansion: {
                 """
                 struct A {
                     let int1: Bool

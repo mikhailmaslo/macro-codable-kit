@@ -32,13 +32,13 @@ let package = Package(
         // Tools for macro development
         .package(
             url: "https://github.com/stackotter/swift-macro-toolkit",
-            branch: "main"
+            from: "0.3.0"
         ),
 
         // Tools for macro development
         .package(
             url: "https://github.com/pointfreeco/swift-macro-testing",
-            branch: "main"
+            from: "0.2.1"
         ),
     ],
     targets: [
