@@ -40,7 +40,7 @@ extension OneOfMacroBase {
             conformances: Set<Conformance>
         ) -> CodeBuildable {
             CodeBuilders.content { [self] in
-                CodingKeysCodeBuilder(accessModifier: enumDecl.isPublic ? .public : nil, enumDecl: enumDecl)
+                DefaultCodableBuilders.CodingKeysBuilder(accessModifier: enumDecl.isPublic ? .public : nil, enumDecl: enumDecl)
 
                 if conformances.contains(.Decodable) {
                     decoder(enumDecl: enumDecl)

@@ -11,14 +11,14 @@ protocol CodableBuilderFactory {
 }
 
 final class DefaultCodableBuilderFactoryImpl: CodableBuilderFactory {
-    private let strategy: CodableStrategy
+    private let strategy: DefaultCodableBuilders.CodableStrategy
 
-    init(strategy: CodableStrategy) {
+    init(strategy: DefaultCodableBuilders.CodableStrategy) {
         self.strategy = strategy
     }
 
     func makeDecoderBuilder(instance: Instance) -> CodeBuildable {
-        DefaultDecodableBuilder(
+        DefaultCodableBuilders.DecodableBuilder(
             accessModifier: instance.isPublic ? .public : nil,
             strategy: strategy,
             members: instance.members
@@ -26,7 +26,7 @@ final class DefaultCodableBuilderFactoryImpl: CodableBuilderFactory {
     }
 
     func makeEncoderBuilder(instance: Instance) -> CodeBuildable {
-        DefaultEncodableBuilder(
+        DefaultCodableBuilders.EncodableBuilder(
             accessModifier: instance.isPublic ? .public : nil,
             strategy: strategy,
             members: instance.members

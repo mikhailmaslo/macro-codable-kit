@@ -45,7 +45,7 @@ extension CodableMacroBase {
             conformances: Set<Conformance>
         ) -> CodeBuildable {
             CodeBuilders.content { [self] in
-                CodingKeysCodeBuilder(accessModifier: instance.isPublic ? .public : nil, members: instance.members)
+                DefaultCodableBuilders.CodingKeysBuilder(accessModifier: instance.isPublic ? .public : nil, instance: instance)
 
                 if conformances.contains(.Decodable) {
                     codableFactory.makeDecoderBuilder(instance: instance)
