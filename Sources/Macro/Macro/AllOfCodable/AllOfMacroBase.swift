@@ -12,20 +12,13 @@ import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
 struct AllOfMacroBase {
-    static var domain = ""
-    static var name = ""
-
-    static func expansion<Macro: MacroMetaProviding>(
+    static func expansion(
         of node: AttributeSyntax,
         attachedTo declaration: some DeclGroupSyntax,
         providingExtensionsOf type: some TypeSyntaxProtocol,
         conformingTo protocols: [TypeSyntax],
-        in context: some MacroExpansionContext,
-        macro _: Macro.Type
+        in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
-        domain = Macro.domain
-        name = Macro.name
-
         let expander = Expander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .singleValue))
 
         guard let instance = expander.ensureStructOrClassDecl(declaration: declaration) else {

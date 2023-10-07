@@ -256,7 +256,7 @@ final class CodableMacroTests: XCTestCase {
                 }
                 """
             }
-            
+
             assertMacro {
                 """
                 @Codable

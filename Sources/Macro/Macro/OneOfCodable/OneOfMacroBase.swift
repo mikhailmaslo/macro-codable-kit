@@ -12,20 +12,13 @@ import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
 public enum OneOfMacroBase {
-    static var domain = ""
-    static var name = ""
-
-    static func expansion<Macro: MacroMetaProviding>(
+    static func expansion(
         of node: AttributeSyntax,
         attachedTo declaration: some DeclGroupSyntax,
         providingExtensionsOf type: some TypeSyntaxProtocol,
         conformingTo protocols: [TypeSyntax],
-        in context: some MacroExpansionContext,
-        macro _: Macro.Type
+        in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
-        domain = Macro.domain
-        name = Macro.name
-
         let expander = Expander()
 
         guard let enumDecl = expander.ensureEnumDecl(declaration: declaration) else {

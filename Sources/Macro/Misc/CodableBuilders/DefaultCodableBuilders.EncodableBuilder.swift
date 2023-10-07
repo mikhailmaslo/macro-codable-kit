@@ -51,10 +51,11 @@ extension DefaultCodableBuilders {
             guard variable.isStoredProperty else { return [] }
 
             return variable.bindings.compactMap { binding -> String? in
-                guard
-                    let identifier = binding.identifier,
-                    let bindingType = binding.type
-                else {
+                guard let identifier = binding.identifier else {
+                    return nil
+                }
+
+                guard let bindingType = binding.type else {
                     return nil
                 }
 
