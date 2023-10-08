@@ -31,7 +31,7 @@ final class EncodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @Encodable
-                ╰─ 🛑 'Encodable' macro can only be applied to a struct
+                ╰─ 🛑 '@Encodable' macro can only be applied to a struct
                 enum NoApplicable {}
                 """
             }
@@ -44,7 +44,7 @@ final class EncodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @Encodable
-                ╰─ 🛑 'Encodable' macro can only be applied to a struct
+                ╰─ 🛑 '@Encodable' macro can only be applied to a struct
                 class NoApplicable {}
                 """
             }

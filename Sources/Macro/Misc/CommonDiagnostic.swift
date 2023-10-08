@@ -11,7 +11,7 @@ import SwiftDiagnostics
 enum CommonDiagnostic {
     static func requiresStruct() -> SimpleDiagnosticMessage {
         .error(
-            message: "'\(MacroConfiguration.current.name)' macro can only be applied to a struct",
+            message: "'@\(MacroConfiguration.current.name)' macro can only be applied to a struct",
             diagnosticID: MessageID(id: #function)
         )
     }
@@ -25,28 +25,28 @@ enum CommonDiagnostic {
 
     static func unsupportedCompoundDeclarationError() -> SimpleDiagnosticMessage {
         .error(
-            message: "'\(MacroConfiguration.current.name)' macro is not applicable to compound declarations, declare each variable on a new line",
+            message: "'@\(MacroConfiguration.current.name)' macro is not applicable to compound declarations, declare each variable on a new line",
             diagnosticID: MessageID(id: #function)
         )
     }
 
     static func missingTypeOfIdentifierError() -> SimpleDiagnosticMessage {
         .error(
-            message: "'\(MacroConfiguration.current.name)' macro is only applicable to declarations with an identifier followed by a type",
+            message: "'@\(MacroConfiguration.current.name)' macro is only applicable to declarations with an identifier followed by a type",
             diagnosticID: MessageID(id: #function)
         )
     }
 
     static func applicableOnlyToStoredProperties() -> SimpleDiagnosticMessage {
         .error(
-            message: "'\(MacroConfiguration.current.name)' macro is only applicable to stored properties declared with an identifier followed by a type, example: `let variable: Int`",
+            message: "'@\(MacroConfiguration.current.name)' macro is only applicable to stored properties declared with an identifier followed by a type, example: `let variable: Int`",
             diagnosticID: MessageID(id: #function)
         )
     }
 
     static func multipleBindingInOneRow() -> SimpleDiagnosticMessage {
         .error(
-            message: "'\(MacroConfiguration.current.name)' macro is only applicable to one variable at a time",
+            message: "'@\(MacroConfiguration.current.name)' macro is only applicable to one variable at a time",
             diagnosticID: MessageID(id: #function)
         )
     }

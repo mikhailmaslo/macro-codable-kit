@@ -30,7 +30,7 @@ final class AllOfEncodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @AllOfEncodable
-                ╰─ 🛑 'AllOfEncodable' macro can only be applied to a struct
+                ╰─ 🛑 '@AllOfEncodable' macro can only be applied to a struct
                 enum NotApplicable {}
                 """
             }
@@ -43,7 +43,7 @@ final class AllOfEncodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @AllOfEncodable
-                ╰─ 🛑 'AllOfEncodable' macro can only be applied to a struct
+                ╰─ 🛑 '@AllOfEncodable' macro can only be applied to a struct
                 class NotApplicable {}
                 """
             }

@@ -31,7 +31,7 @@ final class DecodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @Decodable
-                ╰─ 🛑 'Decodable' macro can only be applied to a struct
+                ╰─ 🛑 '@Decodable' macro can only be applied to a struct
                 enum NoApplicable {}
                 """
             }
@@ -44,7 +44,7 @@ final class DecodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @Decodable
-                ╰─ 🛑 'Decodable' macro can only be applied to a struct
+                ╰─ 🛑 '@Decodable' macro can only be applied to a struct
                 class NoApplicable {}
                 """
             }

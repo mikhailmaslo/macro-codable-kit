@@ -30,7 +30,7 @@ final class AllOfDecodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @AllOfDecodable
-                ╰─ 🛑 'AllOfDecodable' macro can only be applied to a struct
+                ╰─ 🛑 '@AllOfDecodable' macro can only be applied to a struct
                 enum NotApplicable {}
                 """
             }
@@ -43,7 +43,7 @@ final class AllOfDecodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @AllOfDecodable
-                ╰─ 🛑 'AllOfDecodable' macro can only be applied to a struct
+                ╰─ 🛑 '@AllOfDecodable' macro can only be applied to a struct
                 class NotApplicable {}
                 """
             }

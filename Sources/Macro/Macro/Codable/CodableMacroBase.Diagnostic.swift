@@ -12,7 +12,7 @@ extension CodableMacroBase {
     enum Diagnostic {
         static var requiresStruct: SimpleDiagnosticMessage {
             .error(
-                message: "'\(MacroConfiguration.current.name)' macro can only be applied to a struct",
+                message: "'@\(MacroConfiguration.current.name)' macro can only be applied to a struct",
                 diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }

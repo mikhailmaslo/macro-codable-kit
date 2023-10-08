@@ -29,7 +29,7 @@ final class OneOfCodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @OneOfCodable
-                ╰─ 🛑 'OneOfCodable' macro can only be applied to a enum
+                ╰─ 🛑 '@OneOfCodable' macro can only be applied to a enum
                 struct NoApplicable {}
                 """
             }
@@ -42,7 +42,7 @@ final class OneOfCodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @OneOfCodable
-                ╰─ 🛑 'OneOfCodable' macro can only be applied to a enum
+                ╰─ 🛑 '@OneOfCodable' macro can only be applied to a enum
                 class NoApplicable {}
                 """
             }
@@ -397,7 +397,7 @@ final class OneOfCodableMacroTests: XCTestCase {
                 enum Example {
                     case a
                          ┬
-                         ╰─ 🛑 'OneOfCodable' macro requires each case to have one associated value
+                         ╰─ 🛑 '@OneOfCodable' macro requires each case to have one associated value
                 }
                 """
             }
@@ -415,7 +415,7 @@ final class OneOfCodableMacroTests: XCTestCase {
                 enum Example {
                     case a(Int, Int)
                          ┬──────────
-                         ╰─ 🛑 'OneOfCodable' macro requires each case to have one associated value
+                         ╰─ 🛑 '@OneOfCodable' macro requires each case to have one associated value
                 }
                 """
             }

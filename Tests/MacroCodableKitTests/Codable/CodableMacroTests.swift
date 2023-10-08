@@ -31,7 +31,7 @@ final class CodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                ╰─ 🛑 'Codable' macro can only be applied to a struct
+                ╰─ 🛑 '@Codable' macro can only be applied to a struct
                 enum NoApplicable {}
                 """
             }
@@ -44,7 +44,7 @@ final class CodableMacroTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                ╰─ 🛑 'Codable' macro can only be applied to a struct
+                ╰─ 🛑 '@Codable' macro can only be applied to a struct
                 class NoApplicable {}
                 """
             }

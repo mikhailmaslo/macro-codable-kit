@@ -153,7 +153,7 @@ final class DiagnosticTests: XCTestCase {
                 struct Example {
                     let a, b: Int
                     ┬────────────
-                    ╰─ 🛑 'Codable' macro is only applicable to declarations with an identifier followed by a type
+                    ╰─ 🛑 '@Codable' macro is only applicable to declarations with an identifier followed by a type
                 }
                 """
             }
@@ -171,7 +171,7 @@ final class DiagnosticTests: XCTestCase {
                 struct Example {
                     let a: Int, b: Int
                     ┬─────────────────
-                    ╰─ 🛑 'Codable' macro is not applicable to compound declarations, declare each variable on a new line
+                    ╰─ 🛑 '@Codable' macro is not applicable to compound declarations, declare each variable on a new line
                 }
                 """
             }
@@ -189,7 +189,7 @@ final class DiagnosticTests: XCTestCase {
                 @Codable
                 struct Example {
                     @DefaultValue(IntZero)
-                    ╰─ 🛑 'Codable' macro is only applicable to stored properties declared with an identifier followed by a type, example: `let variable: Int`
+                    ╰─ 🛑 '@Codable' macro is only applicable to stored properties declared with an identifier followed by a type, example: `let variable: Int`
                     var a: Int { 0 }
                 }
                 """
