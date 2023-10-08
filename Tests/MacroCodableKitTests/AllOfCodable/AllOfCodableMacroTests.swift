@@ -1,8 +1,8 @@
 //
-//  CodableMacroTests.swift
+//  AllOfCodableMacroTests.swift
 //
 //
-//  Created by Mikhail Maslo on 25.09.23.
+//  Created by Mikhail Maslo on 07.10.23.
 //
 
 import Macro
@@ -13,60 +13,51 @@ import XCTest
 
 private let isRecording = false
 
-final class CodableMacroTests: XCTestCase {
-    func test() {
+final class AllOfCodableMacroTests: XCTestCase {
+    func test() throws {
         withMacroTesting(
             isRecording: isRecording,
             macros: [
-                "Codable": CodableMacro.self,
+                "AllOfCodable": AllOfCodableMacro.self,
                 "OmitCoding": OmitCodingMacro.self,
-                "CodingKey": CodingKeyMacro.self,
             ]
         ) {
             assertMacro {
                 """
-                @Codable
-                enum NoApplicable {}
+                @AllOfCodable
+                enum NotApplicable {}
                 """
             } diagnostics: {
                 """
-                @Codable
-                ╰─ 🛑 'Codable' macro can only be applied to a struct
-                enum NoApplicable {}
+                @AllOfCodable
+                ╰─ 🛑 'AllOfCodable' macro can only be applied to a struct
+                enum NotApplicable {}
                 """
             }
 
             assertMacro {
                 """
-                @Codable
-                class NoApplicable {}
+                @AllOfCodable
+                class NotApplicable {}
                 """
             } diagnostics: {
                 """
-                @Codable
-                ╰─ 🛑 'Codable' macro can only be applied to a struct
-                class NoApplicable {}
+                @AllOfCodable
+                ╰─ 🛑 'AllOfCodable' macro can only be applied to a struct
+                class NotApplicable {}
                 """
             }
 
             assertMacro {
                 """
-                @Codable
+                @AllOfCodable
                 struct Example {
                     let brand: Brand?
                     let company: Company
-
                     @OmitCoding
                     let omittedCompany: Company
 
-                    @CodingKey("custom_company")
-                    let customCompanyKey: Company
-
                     var string: String { "" }
-
-                    @CodingKey("_available")
-                    @available(*, iOS)
-                    let available: Bool
                 }
                 """
             } expansion: {
@@ -75,33 +66,19 @@ final class CodableMacroTests: XCTestCase {
                     let brand: Brand?
                     let company: Company
                     let omittedCompany: Company
-                    let customCompanyKey: Company
 
                     var string: String { "" }
-                    @available(*, iOS)
-                    let available: Bool
                 }
 
                 extension Example: Decodable, Encodable {
-                    enum CodingKeys: String, CodingKey {
-                        case brand
-                        case company
-                        case customCompanyKey = "custom_company"
-                        case available = "_available"
-                    }
                     init(from decoder: Decoder) throws {
-                        let container = try decoder.container(keyedBy: CodingKeys.self)
-                        self.brand = try container.decodeIfPresent(Brand.self, forKey: .brand)
-                        self.company = try container.decode(Company.self, forKey: .company)
-                        self.customCompanyKey = try container.decode(Company.self, forKey: .customCompanyKey)
-                        self.available = try container.decode(Bool.self, forKey: .available)
+                        let container = try decoder.singleValueContainer()
+                        self.brand = try container.decodeIfPresent(Brand.self)
+                        self.company = try container.decode(Company.self)
                     }
                     func encode(to encoder: Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
-                        try container.encodeIfPresent(self.brand, forKey: .brand)
-                        try container.encode(self.company, forKey: .company)
-                        try container.encode(self.customCompanyKey, forKey: .customCompanyKey)
-                        try container.encode(self.available, forKey: .available)
+                        try self.brand.encodeIfPresent(to: encoder)
+                        try self.company.encode(to: encoder)
                     }
                 }
                 """
@@ -109,22 +86,22 @@ final class CodableMacroTests: XCTestCase {
 
             assertMacro {
                 """
-                @Codable
+                @AllOfCodable
                 struct NoCodableExample {
                     let brand: Brand
                 }
 
-                @Codable
+                @AllOfCodable
                 struct OnlyEncodableExample: Encodable {
                     let brand: Brand
                 }
 
-                @Codable
+                @AllOfCodable
                 struct OnlyDecodableExample: Decodable {
                     let brand: Brand
                 }
 
-                @Codable
+                @AllOfCodable
                 struct CodableExample: Codable {
                     let brand: Brand
                 }
@@ -145,36 +122,25 @@ final class CodableMacroTests: XCTestCase {
                 }
 
                 extension NoCodableExample: Decodable, Encodable {
-                    enum CodingKeys: String, CodingKey {
-                        case brand
-                    }
                     init(from decoder: Decoder) throws {
-                        let container = try decoder.container(keyedBy: CodingKeys.self)
-                        self.brand = try container.decode(Brand.self, forKey: .brand)
+                        let container = try decoder.singleValueContainer()
+                        self.brand = try container.decode(Brand.self)
                     }
                     func encode(to encoder: Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
-                        try container.encode(self.brand, forKey: .brand)
+                        try self.brand.encode(to: encoder)
                     }
                 }
 
                 extension OnlyEncodableExample: Decodable {
-                    enum CodingKeys: String, CodingKey {
-                        case brand
-                    }
                     init(from decoder: Decoder) throws {
-                        let container = try decoder.container(keyedBy: CodingKeys.self)
-                        self.brand = try container.decode(Brand.self, forKey: .brand)
+                        let container = try decoder.singleValueContainer()
+                        self.brand = try container.decode(Brand.self)
                     }
                 }
 
                 extension OnlyDecodableExample: Encodable {
-                    enum CodingKeys: String, CodingKey {
-                        case brand
-                    }
                     func encode(to encoder: Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
-                        try container.encode(self.brand, forKey: .brand)
+                        try self.brand.encode(to: encoder)
                     }
                 }
                 """
@@ -182,17 +148,17 @@ final class CodableMacroTests: XCTestCase {
 
             assertMacro {
                 """
-                @Codable
+                @AllOfCodable
                 struct Empty1 {
                     @OmitCoding
                     let brand: Brand
                 }
 
-                @Codable
+                @AllOfCodable
                 struct Empty2 {
                 }
 
-                @Codable
+                @AllOfCodable
                 struct Empty3 {
                     var string: String { "" }
                 }
@@ -233,22 +199,22 @@ final class CodableMacroTests: XCTestCase {
 
             assertMacro {
                 """
-                @Codable
+                @AllOfCodable
                 struct NoPublicCodable1 {
                     let brand: Brand
                 }
 
-                @Codable
+                @AllOfCodable
                 private struct NoPublicCodable2 {
                     let brand: Brand
                 }
 
-                @Codable
+                @AllOfCodable
                 internal struct NoPublicCodable3 {
                     let brand: Brand
                 }
 
-                @Codable
+                @AllOfCodable
                 public struct WithPublicCodable {
                 }
                 """
@@ -267,44 +233,32 @@ final class CodableMacroTests: XCTestCase {
                 }
 
                 extension NoPublicCodable1: Decodable, Encodable {
-                    enum CodingKeys: String, CodingKey {
-                        case brand
-                    }
                     init(from decoder: Decoder) throws {
-                        let container = try decoder.container(keyedBy: CodingKeys.self)
-                        self.brand = try container.decode(Brand.self, forKey: .brand)
+                        let container = try decoder.singleValueContainer()
+                        self.brand = try container.decode(Brand.self)
                     }
                     func encode(to encoder: Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
-                        try container.encode(self.brand, forKey: .brand)
+                        try self.brand.encode(to: encoder)
                     }
                 }
 
                 extension NoPublicCodable2: Decodable, Encodable {
-                    enum CodingKeys: String, CodingKey {
-                        case brand
-                    }
                     init(from decoder: Decoder) throws {
-                        let container = try decoder.container(keyedBy: CodingKeys.self)
-                        self.brand = try container.decode(Brand.self, forKey: .brand)
+                        let container = try decoder.singleValueContainer()
+                        self.brand = try container.decode(Brand.self)
                     }
                     func encode(to encoder: Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
-                        try container.encode(self.brand, forKey: .brand)
+                        try self.brand.encode(to: encoder)
                     }
                 }
 
                 extension NoPublicCodable3: Decodable, Encodable {
-                    enum CodingKeys: String, CodingKey {
-                        case brand
-                    }
                     init(from decoder: Decoder) throws {
-                        let container = try decoder.container(keyedBy: CodingKeys.self)
-                        self.brand = try container.decode(Brand.self, forKey: .brand)
+                        let container = try decoder.singleValueContainer()
+                        self.brand = try container.decode(Brand.self)
                     }
                     func encode(to encoder: Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
-                        try container.encode(self.brand, forKey: .brand)
+                        try self.brand.encode(to: encoder)
                     }
                 }
 

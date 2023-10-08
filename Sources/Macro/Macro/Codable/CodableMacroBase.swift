@@ -19,23 +19,24 @@ struct CodableMacroBase {
         conformingTo protocols: [TypeSyntax],
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
-        let expander = Expander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .codingKeys))
+        let expander = InstanceExpander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .codingKeys))
+        let conformances = Conformance.makeConformances(protocols.map(\.trimmedDescription))
 
-        guard let instance = expander.ensureStructOrClassDecl(declaration: declaration) else {
-            context.diagnose(Diagnostic.requiresStructOrClass.diagnose(at: node))
+        let buildingData: CodableBuildingData
+        do {
+            buildingData = try expander.verify(declaration: declaration, strategy: .codingKeys, conformances: conformances)
+        } catch {
             return []
         }
 
-        let builder = expander.extensionCodeBuilder(instance: instance, type: type, conformances: Conformance.makeConformances(protocols.map(\.trimmedDescription)))
-
-        var formattedCode = ""
+        let formattedCode: String
         do {
-            formattedCode = try expander.generateAndFormat(codeBuilder: builder)
+            let codeBuilder = expander.extensionCodeBuilder(type: type, buildingData: buildingData, conformances: conformances)
+            formattedCode = try expander.generateAndFormat(codeBuilder: codeBuilder)
         } catch {
-            print("ERROR: Couldn't format code = \(builder.build()) with error = \(error)")
             context.diagnose(
-                Diagnostic
-                    .internalError(message: "Internal Error. Couldn't format code = \(builder.build()) with error = \(error)")
+                CommonDiagnostic
+                    .internalError(message: "Internal Error = \(error). Couldn't format code")
                     .diagnose(at: declaration)
             )
             return []
@@ -46,10 +47,9 @@ struct CodableMacroBase {
         }
 
         guard let extensionDecl = expander.mapToExtensionDeclSyntax(code: formattedCode) else {
-            print("Couldn't expand code = \(formattedCode)")
             context.diagnose(
-                Diagnostic
-                    .internalError(message: "Internal Error. Couldn't create extension")
+                CommonDiagnostic
+                    .internalError(message: "Internal Error. Couldn't create extension from code = \(formattedCode)")
                     .diagnose(at: declaration)
             )
             return []

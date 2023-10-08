@@ -8,8 +8,10 @@
 import MacroToolkit
 
 extension Variable {
-    func knownAttributes() -> [DefaultCodableBuilders.KnownAttribute: [Any]] {
-        var result: [DefaultCodableBuilders.KnownAttribute: [Any]] = [:]
+    typealias AllKnownAttributes = [KnownAttribute: [Any]]
+
+    func knownAttributes() -> AllKnownAttributes {
+        var result: [KnownAttribute: [Any]] = [:]
         result.reserveCapacity(attributes.count)
         for attribute in attributes {
             if let omitCoding = attribute.attribute.flatMap({ OmitCoding($0) }) {

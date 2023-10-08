@@ -10,9 +10,9 @@ import SwiftDiagnostics
 
 extension AllOfMacroBase {
     enum Diagnostic {
-        static var requiresStructOrClass: SimpleDiagnosticMessage {
+        static var requiresStruct: SimpleDiagnosticMessage {
             .error(
-                message: "'\(MacroConfiguration.current.name)' macro can only be applied to a struct or to a class",
+                message: "'\(MacroConfiguration.current.name)' macro can only be applied to a struct",
                 diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }
@@ -20,13 +20,6 @@ extension AllOfMacroBase {
         static var requiresEitherEncodableOrDecodable: SimpleDiagnosticMessage {
             .error(
                 message: "'\(MacroConfiguration.current.name)' macro can only be applied to a enum conforming to either Encodable or Decodable",
-                diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
-            )
-        }
-
-        static func internalError(message: String) -> SimpleDiagnosticMessage {
-            .errorWithContext(
-                message: message,
                 diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }
