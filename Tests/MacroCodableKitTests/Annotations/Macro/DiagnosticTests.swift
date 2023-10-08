@@ -40,7 +40,7 @@ final class DiagnosticTests: XCTestCase {
                 @Codable
                 struct Example {
                     @OmitCoding
-                    ╰─ 🛑 The attribute '@Omitcoding' has been applied more than once'. Redundant attribute applications have no effect on the generated code and may cause confusion.
+                    ╰─ 🛑 '@Omitcoding' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @OmitCoding
                     let a: Int
                 }
@@ -61,7 +61,7 @@ final class DiagnosticTests: XCTestCase {
                 @Codable
                 struct Example {
                     @CodingKey("_a")
-                    ╰─ 🛑 The attribute '@Codingkey' has been applied more than once'. Redundant attribute applications have no effect on the generated code and may cause confusion.
+                    ╰─ 🛑 '@Codingkey' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @CodingKey("_a")
                     let a: Int
                 }
@@ -82,7 +82,7 @@ final class DiagnosticTests: XCTestCase {
                 @Codable
                 struct Example {
                     @ValueStrategy(Base64Data)
-                    ╰─ 🛑 The attribute '@Valuestrategy' has been applied more than once'. Redundant attribute applications have no effect on the generated code and may cause confusion.
+                    ╰─ 🛑 '@Valuestrategy' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @ValueStrategy(Base64Data)
                     let string: String
                 }
@@ -103,7 +103,7 @@ final class DiagnosticTests: XCTestCase {
                 @Codable
                 struct Example {
                     @DefaultValue(BoolTrue)
-                    ╰─ 🛑 The attribute '@Defaultvalue' has been applied more than once'. Redundant attribute applications have no effect on the generated code and may cause confusion.
+                    ╰─ 🛑 '@Defaultvalue' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @DefaultValue(BoolFalse)
                     let bool: Bool
                 }
@@ -124,7 +124,7 @@ final class DiagnosticTests: XCTestCase {
                 @Codable
                 struct Example {
                     @CustomCoding(SafeDecoding)
-                    ╰─ 🛑 The attribute '@Customcoding' has been applied more than once'. Redundant attribute applications have no effect on the generated code and may cause confusion.
+                    ╰─ 🛑 '@Customcoding' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @CustomCoding(SafeDecoding)
                     let array: [Bool]
                 }
