@@ -131,7 +131,7 @@ final class AllOfCodableMacroTests: XCTestCase {
                     let brand: Brand
                 }
                 """
-            }expansion: {
+            } expansion: {
                 """
                 struct NoCodableExample__testing__ {
                     let brand: Brand

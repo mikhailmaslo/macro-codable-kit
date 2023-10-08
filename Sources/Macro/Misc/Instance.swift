@@ -11,7 +11,6 @@ import SwiftSyntax
 protocol Instance {
     var declaration: any DeclGroupSyntax { get }
 
-    var isStruct: Bool { get }
     var members: [Decl] { get }
 }
 

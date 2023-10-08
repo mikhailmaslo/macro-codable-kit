@@ -182,7 +182,6 @@ extension DecodableBuilder {
         accessModifier: AccessModifier?,
         enumDecl: Enum
     ) throws -> DecodableBuilder.BuildingData {
-        let accessModifier: AccessModifier? = enumDecl.isPublic ? .public : nil
         return try DecodableBuilder.BuildingData(
             accessModifier: accessModifier,
             strategy: .codingKeys,

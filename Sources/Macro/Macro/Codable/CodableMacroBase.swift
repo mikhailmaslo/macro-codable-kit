@@ -24,7 +24,7 @@ struct CodableMacroBase {
             config: ConformanceDiagnosticChecker.Config(
                 replacementMacroName: [
                     .Decodable: "@\(MacroConfiguration.makeName(macro: EncodableMacro.self))",
-                    .Encodable: "@\(MacroConfiguration.makeName(macro: DecodableMacro.self))"
+                    .Encodable: "@\(MacroConfiguration.makeName(macro: DecodableMacro.self))",
                 ]
             )
         )
@@ -35,7 +35,7 @@ struct CodableMacroBase {
             conformancesToGenerate: conformancesToGenerate
         )
 
-        let expander = InstanceExpander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .codingKeys))
+        let expander = InstanceExpander(codableFactory: DefaultCodableBuilderFactoryImpl())
 
         let buildingData: CodableBuildingData
         do {

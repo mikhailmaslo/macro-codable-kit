@@ -41,7 +41,7 @@ final class ConformanceDiagnosticChecker {
 
         for conformance in Conformance.allCases
             where expectedConformances.contains(conformance)
-                && !conformancesToGenerate.contains(conformance)
+            && !conformancesToGenerate.contains(conformance)
         {
             notifyConformanceMismatch(type: type, declaration: declaration, existingConformance: conformance)
         }
@@ -52,10 +52,9 @@ final class ConformanceDiagnosticChecker {
         declaration: some DeclGroupSyntax,
         existingConformance: Conformance
     ) {
-        let message = SimpleDiagnosticMessage(
+        let message: SimpleDiagnosticMessage = .warning(
             message: "'@\(MacroConfiguration.current.name)' macro won't generate '\(existingConformance)' conformance since '\(type.trimmedDescription)' already conformes to it. \(config.replacementMacroName[existingConformance].map { "Consider using '\($0)' instead" } ?? "")",
-            diagnosticID: .init(id: #function),
-            severity: .warning
+            diagnosticID: .init(id: #function)
         )
         MacroConfiguration.current.context.diagnose(
             message.diagnose(at: declaration)
@@ -67,10 +66,9 @@ final class ConformanceDiagnosticChecker {
         declaration: some DeclGroupSyntax,
         expectedConformances: Set<Conformance>
     ) {
-        let message = SimpleDiagnosticMessage(
+        let message: SimpleDiagnosticMessage = .warning(
             message: "'@\(MacroConfiguration.current.name)' macro has not effect since '\(type.trimmedDescription)' already conformes to \(expectedConformances.map(\.rawValue).sorted()). Consider removing '@\(MacroConfiguration.current.name)'",
-            diagnosticID: .init(id: #function),
-            severity: .warning
+            diagnosticID: .init(id: #function)
         )
         MacroConfiguration.current.context.diagnose(
             message.diagnose(at: declaration)

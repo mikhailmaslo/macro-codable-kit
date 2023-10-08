@@ -12,12 +12,6 @@ protocol CodableBuilderFactory {
 }
 
 final class DefaultCodableBuilderFactoryImpl: CodableBuilderFactory {
-    private let strategy: CodableStrategy
-
-    init(strategy: CodableStrategy) {
-        self.strategy = strategy
-    }
-
     func makeCodingKeysBuilder(buildingData: CodingKeysBuilder.BuildingData) -> CodeBuildable {
         CodingKeysBuilder(buildingData: buildingData)
     }

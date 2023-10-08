@@ -9,7 +9,6 @@ import MacroToolkit
 import SwiftSyntax
 
 struct CustomCoding {
-    let attribute: Attribute
     let codingNameType: String
 
     init?(_ attribute: Attribute) {
@@ -20,7 +19,6 @@ struct CustomCoding {
             return nil
         }
 
-        self.attribute = attribute
         self.codingNameType = codingNameType
     }
 }

@@ -8,12 +8,6 @@
 import SwiftDiagnostics
 import SwiftSyntaxMacros
 
-private struct FakeMacro: Macro {}
-
-protocol DiagnosticHandler {
-    func handle(_ diagnostic: Diagnostic)
-}
-
 struct MacroConfiguration {
     fileprivate static var _current: Self!
 

@@ -7,18 +7,6 @@
 
 import MacroToolkit
 
-extension Enum {
-    var rawInheritedTypes: [String]? {
-        _syntax.inheritanceClause?.inheritedTypes.map(\.type.trimmedDescription)
-    }
-}
-
-extension Struct {
-    var rawInheritedTypes: [String]? {
-        _syntax.inheritanceClause?.inheritedTypes.map(\.type.trimmedDescription)
-    }
-}
-
 extension Variable {
     var isStatic: Bool {
         _syntax.modifiers.contains(where: { modifier in

@@ -44,13 +44,6 @@ enum CommonDiagnostic {
         )
     }
 
-    static func multipleBindingInOneRow() -> SimpleDiagnosticMessage {
-        .error(
-            message: "'@\(MacroConfiguration.current.name)' macro is only applicable to one variable at a time",
-            diagnosticID: MessageID(id: #function)
-        )
-    }
-
     static func internalError(
         function: StaticString = #function,
         line: Int = #line,

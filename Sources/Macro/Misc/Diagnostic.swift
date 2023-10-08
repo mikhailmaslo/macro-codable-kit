@@ -27,6 +27,7 @@ extension SimpleDiagnosticMessage {
         SimpleDiagnosticMessage(message: message, diagnosticID: diagnosticID, severity: .warning)
     }
 
+    // periphery:ignore
     static func note(message: String, diagnosticID: MessageID) -> SimpleDiagnosticMessage {
         SimpleDiagnosticMessage(message: message, diagnosticID: diagnosticID, severity: .note)
     }

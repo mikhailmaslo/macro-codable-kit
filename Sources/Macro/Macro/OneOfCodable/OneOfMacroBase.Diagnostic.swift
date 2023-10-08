@@ -23,12 +23,5 @@ extension OneOfMacroBase {
                 diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }
-
-        static func internalError(message: String) -> SimpleDiagnosticMessage {
-            .errorWithContext(
-                message: message,
-                diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
-            )
-        }
     }
 }

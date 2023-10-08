@@ -169,7 +169,7 @@ final class AllOfDecodableMacroTests: XCTestCase {
                 """
 
                 """
-            }expansion: {
+            } expansion: {
                 """
                 struct Empty1__testing__ {
                     let brand: Brand

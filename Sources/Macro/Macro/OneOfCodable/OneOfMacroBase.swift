@@ -24,7 +24,7 @@ public enum OneOfMacroBase {
             config: ConformanceDiagnosticChecker.Config(
                 replacementMacroName: [
                     .Decodable: "@\(MacroConfiguration.makeName(macro: OneOfEncodableMacro.self))",
-                    .Encodable: "@\(MacroConfiguration.makeName(macro: OneOfDecodableMacro.self))"
+                    .Encodable: "@\(MacroConfiguration.makeName(macro: OneOfDecodableMacro.self))",
                 ]
             )
         )

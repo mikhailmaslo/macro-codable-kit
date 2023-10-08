@@ -9,7 +9,6 @@ import MacroToolkit
 import SwiftSyntax
 
 struct DefaultValue {
-    let attribute: Attribute
     let providerType: String
 
     init?(_ attribute: Attribute) {
@@ -20,7 +19,6 @@ struct DefaultValue {
             return nil
         }
 
-        self.attribute = attribute
         self.providerType = providerType
     }
 }

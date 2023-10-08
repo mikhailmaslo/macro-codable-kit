@@ -59,7 +59,7 @@ final class OneOfEncodableMacroTests: XCTestCase {
                 """
 
                 """
-            }expansion: {
+            } expansion: {
                 """
                 enum Applicable__testing__ {
                     case int(Int)
@@ -141,7 +141,7 @@ final class OneOfEncodableMacroTests: XCTestCase {
                     case int(Int)
                 }
                 """
-            }expansion: {
+            } expansion: {
                 """
                 enum NoCodableExample__testing__ {
                     case int(Int)

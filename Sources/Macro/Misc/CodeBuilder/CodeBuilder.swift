@@ -15,6 +15,7 @@ enum CodeBuilder {
         CompositeCode(components: components)
     }
 
+    // periphery:ignore
     static func buildIf(_ component: CodeBuildable?) -> CodeBuildable {
         component ?? EmptyCodeBuilder()
     }
@@ -28,6 +29,7 @@ enum CodeBuilder {
     }
 }
 
+// periphery:ignore
 struct EmptyCodeBuilder: CodeBuildable {
     func build() -> String {
         ""

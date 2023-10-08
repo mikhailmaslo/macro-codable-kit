@@ -14,10 +14,6 @@ enum Conformance: String, CaseIterable {
         .Codable: [.Decodable, .Encodable],
     ]
 
-    static func makeConformances(_ rawValues: Set<String>?) -> Set<Conformance> {
-        makeConformances(rawValues.map { Array($0) })
-    }
-
     static func makeConformances(_ rawValues: [String]?) -> Set<Conformance> {
         var result = Set<Conformance>()
         for rawValue in rawValues ?? [] {

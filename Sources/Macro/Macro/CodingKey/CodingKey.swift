@@ -9,7 +9,6 @@ import MacroToolkit
 import SwiftSyntax
 
 struct CodingKey {
-    let attribute: Attribute
     let key: String
 
     init?(_ attribute: Attribute) {
@@ -20,7 +19,6 @@ struct CodingKey {
             return nil
         }
 
-        self.attribute = attribute
         self.key = key
     }
 }
