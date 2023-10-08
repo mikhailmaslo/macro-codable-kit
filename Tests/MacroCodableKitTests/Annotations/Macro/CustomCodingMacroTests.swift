@@ -25,7 +25,7 @@ final class CustomCodingMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct SafeCodingArray1: Equatable {
+                struct SafeCodingArray1\(sutSuffix): Equatable {
                     let strings: [String]
 
                     @CustomCoding(SafeDecoding)
@@ -34,14 +34,14 @@ final class CustomCodingMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct SafeCodingArray1: Equatable {
+                struct SafeCodingArray1__testing__: Equatable {
                     let strings: [String]
 
                     @CustomCoding(SafeDecoding)
                     let safeStrings: [String]
                 }
 
-                extension SafeCodingArray1: Decodable, Encodable {
+                extension SafeCodingArray1__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case strings
                         case safeStrings
@@ -67,19 +67,19 @@ final class CustomCodingMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct SafeCodingArray2: Equatable {
+                struct SafeCodingArray2\(sutSuffix): Equatable {
                     @CustomCoding(SafeDecoding)
                     let safeStrings: [String]?
                 }
                 """
             } expansion: {
                 """
-                struct SafeCodingArray2: Equatable {
+                struct SafeCodingArray2__testing__: Equatable {
                     @CustomCoding(SafeDecoding)
                     let safeStrings: [String]?
                 }
 
-                extension SafeCodingArray2: Decodable, Encodable {
+                extension SafeCodingArray2__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case safeStrings
                     }
@@ -102,7 +102,7 @@ final class CustomCodingMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct SafeCodingDictionary2 {
+                struct SafeCodingDictionary2\(sutSuffix) {
                     let stringByInt: [Int: String]
 
                     @CustomCoding(SafeDecoding)
@@ -111,14 +111,14 @@ final class CustomCodingMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct SafeCodingDictionary2 {
+                struct SafeCodingDictionary2__testing__ {
                     let stringByInt: [Int: String]
 
                     @CustomCoding(SafeDecoding)
                     let safeStringByInt: [Int: String]
                 }
 
-                extension SafeCodingDictionary2: Decodable, Encodable {
+                extension SafeCodingDictionary2__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case stringByInt
                         case safeStringByInt
@@ -144,7 +144,7 @@ final class CustomCodingMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct SafeCodingDictionary3 {
+                struct SafeCodingDictionary3\(sutSuffix) {
                     let intByString: [String: Int]
 
                     @CustomCoding(SafeDecoding)
@@ -153,14 +153,14 @@ final class CustomCodingMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct SafeCodingDictionary3 {
+                struct SafeCodingDictionary3__testing__ {
                     let intByString: [String: Int]
 
                     @CustomCoding(SafeDecoding)
                     let safeIntByString: [String: Int]?
                 }
 
-                extension SafeCodingDictionary3: Decodable, Encodable {
+                extension SafeCodingDictionary3__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case intByString
                         case safeIntByString
@@ -186,19 +186,19 @@ final class CustomCodingMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct SomeTypeCustomCoding {
+                struct SomeTypeCustomCoding\(sutSuffix) {
                     @CustomCoding(XXXX)
                     let someType: SomeType?
                 }
                 """
             } expansion: {
                 """
-                struct SomeTypeCustomCoding {
+                struct SomeTypeCustomCoding__testing__ {
                     @CustomCoding(XXXX)
                     let someType: SomeType?
                 }
 
-                extension SomeTypeCustomCoding: Decodable, Encodable {
+                extension SomeTypeCustomCoding__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case someType
                     }

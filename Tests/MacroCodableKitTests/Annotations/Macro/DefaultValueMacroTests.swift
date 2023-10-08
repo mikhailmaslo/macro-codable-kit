@@ -25,7 +25,7 @@ final class DefaultValueMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct DefaultValueBool {
+                struct DefaultValueBool\(sutSuffix) {
                     let boolean1: Bool
 
                     @DefaultValue(BoolFalse)
@@ -42,7 +42,7 @@ final class DefaultValueMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct DefaultValueBool {
+                struct DefaultValueBool__testing__ {
                     let boolean1: Bool
                     let boolean2: Bool
                     let boolean3: Bool
@@ -51,7 +51,7 @@ final class DefaultValueMacroTests: XCTestCase {
                     let boolean5: Bool?
                 }
 
-                extension DefaultValueBool: Decodable, Encodable {
+                extension DefaultValueBool__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case boolean1
                         case boolean2
@@ -97,7 +97,7 @@ final class DefaultValueMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct DefaultValueInt {
+                struct DefaultValueInt\(sutSuffix) {
                     let int1: Int
 
                     @DefaultValue(IntZero)
@@ -111,7 +111,7 @@ final class DefaultValueMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct DefaultValueInt {
+                struct DefaultValueInt__testing__ {
                     let int1: Int
                     let int2: Int
                     let int3: Int?
@@ -119,7 +119,7 @@ final class DefaultValueMacroTests: XCTestCase {
                     let int4: Int?
                 }
 
-                extension DefaultValueInt: Decodable, Encodable {
+                extension DefaultValueInt__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case int1
                         case int2
@@ -157,7 +157,7 @@ final class DefaultValueMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct A {
+                struct A\(sutSuffix) {
                     let int1: Bool
 
                     @DefaultValue(IntZero)
@@ -169,13 +169,13 @@ final class DefaultValueMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct A {
+                struct A__testing__ {
                     let int1: Bool
                     let int2: Bool
                     let string: String
                 }
 
-                extension A: Decodable, Encodable {
+                extension A__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case int1
                         case int2
