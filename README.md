@@ -20,7 +20,7 @@
     - [@CustomCoding](#customcoding)
 - [Installation](#installation)
   - [Swift Package Manager](#swift-package-manager)
-- [Known limitations](#knownlimitations)
+- [Known Limitations](#known-limitations)
 - [Acknowledgments](#acknowledgments)
 
 ## Motivation
