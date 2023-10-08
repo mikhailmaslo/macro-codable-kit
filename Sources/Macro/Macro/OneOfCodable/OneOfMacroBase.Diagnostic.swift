@@ -12,15 +12,22 @@ extension OneOfMacroBase {
     enum Diagnostic {
         static var requiresEnum: SimpleDiagnosticMessage {
             .error(
-                message: "'\(OneOfMacroBase.name)' macro can only be applied to a enm",
-                diagnosticID: MessageID(domain: OneOfMacroBase.domain, id: #function)
+                message: "'@\(MacroConfiguration.current.name)' macro can only be applied to a enum",
+                diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
+            )
+        }
+
+        static var requiresAssociatedValue: SimpleDiagnosticMessage {
+            .error(
+                message: "'@\(MacroConfiguration.current.name)' macro requires each case to have one associated value",
+                diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }
 
         static func internalError(message: String) -> SimpleDiagnosticMessage {
             .errorWithContext(
                 message: message,
-                diagnosticID: MessageID(domain: OneOfMacroBase.domain, id: #function)
+                diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }
     }

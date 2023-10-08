@@ -10,19 +10,54 @@ import SwiftSyntax
 
 extension OneOfMacroBase {
     final class Expander {
-        private let codableFactory: CodableBuilderFactory
+        func verify(
+            declaration: some DeclGroupSyntax,
+            conformances: Set<Conformance>
+        ) throws -> CodableBuildingData {
+            guard let enumDecl = Enum(declaration) else {
+                MacroConfiguration.current.context.diagnose(
+                    Diagnostic.requiresEnum.diagnose(at: declaration)
+                )
 
-        init(codableFactory: CodableBuilderFactory) {
-            self.codableFactory = codableFactory
-        }
+                throw CommonError.diagnosticError
+            }
 
-        func ensureEnumDecl(declaration: some DeclGroupSyntax) -> Enum? {
-            Enum(declaration)
+            let accessModifier: AccessModifier? = enumDecl.isPublic ? .public : nil
+            let codingKeysBuildingData = try CodingKeysBuilder.verify(
+                accessModifier: accessModifier,
+                enumDecl: enumDecl
+            )
+
+            let encodingBuildingData: EncodableBuilder.BuildingData?
+            if conformances.contains(.Encodable) {
+                encodingBuildingData = try EncodableBuilder.verify(
+                    accessModifier: accessModifier,
+                    enumDecl: enumDecl
+                )
+            } else {
+                encodingBuildingData = nil
+            }
+
+            let decodingBuildingData: DecodableBuilder.BuildingData?
+            if conformances.contains(.Decodable) {
+                decodingBuildingData = try DecodableBuilder.verify(
+                    accessModifier: accessModifier,
+                    enumDecl: enumDecl
+                )
+            } else {
+                decodingBuildingData = nil
+            }
+
+            return CodableBuildingData(
+                codingKeysBuildingData: codingKeysBuildingData,
+                encodingBuildingData: encodingBuildingData,
+                decodingBuildingData: decodingBuildingData
+            )
         }
 
         func extensionCodeBuilder(
-            enumDecl: Enum,
             type: some TypeSyntaxProtocol,
+            buildingData: CodableBuildingData,
             conformances: Set<Conformance>
         ) -> CodeBuildable {
             CodeBuilders.content {
@@ -32,85 +67,70 @@ extension OneOfMacroBase {
                         name: type.trimmedDescription,
                         conformances: conformances
                     ) { [self] in
-                        membersCodeBuilder(
-                            enumDecl: enumDecl,
-                            conformances: conformances
-                        )
+                        membersCodeBuilder(buildingData: buildingData)
                     }
                 }
             }
         }
 
         func membersCodeBuilder(
-            enumDecl: Enum,
-            conformances: Set<Conformance>
+            buildingData: CodableBuildingData
         ) -> CodeBuildable {
             CodeBuilders.content { [self] in
-                CodingKeysCodeBuilder(accessModifier: enumDecl.isPublic ? .public : nil, enumDecl: enumDecl)
-
-                if conformances.contains(.Decodable) {
-                    decoder(enumDecl: enumDecl)
+                if let buildingData = buildingData.codingKeysBuildingData {
+                    CodingKeysBuilder(buildingData: buildingData)
                 }
 
-                if conformances.contains(.Encodable) {
-                    encoder(enumDecl: enumDecl)
+                if let buildingData = buildingData.decodingBuildingData {
+                    decoder(buildingData: buildingData)
                 }
-            }
-        }
 
-        private func decoder(enumDecl: Enum) -> some CodeBuildable {
-            CodeBuilders.decoder(accessModifier: enumDecl.isPublic ? .public : nil) {
-                "let container = try decoder.container(keyedBy: CodingKeys.self)"
-
-                """
-                guard let key = container.allKeys.first else {
-                    throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Unknown enum case."))
-                }
-                """
-
-                SwitchBuilder(expression: "key") {
-                    enumDecl.cases
-                        .compactMap { enumCase -> String? in
-                            guard
-                                let caseValue = enumCase.value
-                            else {
-                                return nil
-                            }
-
-                            let parameter: EnumCaseAssociatedValueParameter
-                            switch caseValue {
-                            case let .associatedValue(parameters):
-                                if let firstParameter = parameters.first {
-                                    parameter = firstParameter
-                                } else {
-                                    return nil
-                                }
-                            case .rawValue:
-                                return nil
-                            }
-
-                            let typeDescription = parameter.type._baseSyntax.trimmedDescription
-                            return """
-                            case .\(enumCase.identifier):
-                                self = .\(enumCase.identifier)(try container.decode(\(typeDescription).self, forKey: key))
-                            """
-                        }
+                if let buildingData = buildingData.encodingBuildingData {
+                    encoder(buildingData: buildingData)
                 }
             }
         }
 
-        private func encoder(enumDecl: Enum) -> some CodeBuildable {
-            CodeBuilders.encoder(accessModifier: enumDecl.isPublic ? .public : nil) {
-                "var container = encoder.container(keyedBy: CodingKeys.self)"
+        private func decoder(buildingData: DecodableBuilder.BuildingData) -> some CodeBuildable {
+            CodeBuilders.decoder(accessModifier: buildingData.accessModifier) {
+                if buildingData.items.isEmpty {
+                    ""
+                } else {
+                    "let container = try decoder.container(keyedBy: CodingKeys.self)"
 
-                SwitchBuilder(expression: "self") {
-                    enumDecl.cases
-                        .map { enumCase in
+                    """
+                    guard let key = container.allKeys.first else {
+                        throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Unknown enum case."))
+                    }
+                    """
+
+                    SwitchBuilder(expression: "key") {
+                        buildingData.items.map { item in
                             """
-                                case .\(enumCase.identifier)(let payload):
-                                    try container.encode(payload, forKey: .\(enumCase.identifier))
+                            case .\(item.identifier):
+                                self = \(item.function)
                             """
                         }
+                    }
+                }
+            }
+        }
+
+        private func encoder(buildingData: EncodableBuilder.BuildingData) -> some CodeBuildable {
+            CodeBuilders.encoder(accessModifier: buildingData.accessModifier) {
+                if buildingData.items.isEmpty {
+                    ""
+                } else {
+                    "var container = encoder.container(keyedBy: CodingKeys.self)"
+
+                    SwitchBuilder(expression: "self") {
+                        buildingData.items.map { item in
+                            """
+                            case .\(item.identifier)(let payload):
+                                \(item.function)
+                            """
+                        }
+                    }
                 }
             }
         }
@@ -122,5 +142,72 @@ extension OneOfMacroBase {
         func mapToExtensionDeclSyntax(code: String) -> ExtensionDeclSyntax? {
             DeclSyntax(stringLiteral: code).as(ExtensionDeclSyntax.self)
         }
+    }
+}
+
+extension EncodableBuilder {
+    static func verify(
+        accessModifier: AccessModifier?,
+        enumDecl: Enum
+    ) throws -> EncodableBuilder.BuildingData {
+        try EncodableBuilder.BuildingData(
+            accessModifier: accessModifier,
+            strategy: .codingKeys,
+            items: enumDecl.cases
+                .compactMap { enumCase -> EncodableBuilder.BuildingData.Item? in
+                    guard
+                        case let .associatedValue(parameters) = enumCase.value,
+                        parameters.count == 1,
+                        let parameter = parameters.first
+                    else {
+                        MacroConfiguration.current.context.diagnose(
+                            OneOfMacroBase.Diagnostic.requiresAssociatedValue
+                                .diagnose(at: enumCase._syntax)
+                        )
+                        throw CommonError.diagnosticError
+                    }
+
+                    let functionName = parameter.type.isOptional ? "encodeIfPresent" : "encode"
+                    return EncodableBuilder.BuildingData.Item(
+                        identifier: enumCase.identifier,
+                        function: "try container.\(functionName)(payload, forKey: .\(enumCase.identifier))"
+                    )
+                }
+        )
+    }
+}
+
+extension DecodableBuilder {
+    static func verify(
+        accessModifier: AccessModifier?,
+        enumDecl: Enum
+    ) throws -> DecodableBuilder.BuildingData {
+        let accessModifier: AccessModifier? = enumDecl.isPublic ? .public : nil
+        return try DecodableBuilder.BuildingData(
+            accessModifier: accessModifier,
+            strategy: .codingKeys,
+            items: enumDecl.cases
+                .compactMap { enumCase -> DecodableBuilder.BuildingData.Item? in
+                    guard
+                        case let .associatedValue(parameters) = enumCase.value,
+                        parameters.count == 1,
+                        let parameter = parameters.first
+                    else {
+                        MacroConfiguration.current.context.diagnose(
+                            OneOfMacroBase.Diagnostic.requiresAssociatedValue
+                                .diagnose(at: enumCase._syntax)
+                        )
+                        throw CommonError.diagnosticError
+                    }
+
+                    let typeDescription = parameter.type.typeDescription(preservingOptional: false)
+                    let functionName = parameter.type.isOptional ? "decodeIfPresent" : "decode"
+                    let label = parameter.label.map { "\($0): " } ?? ""
+                    return DecodableBuilder.BuildingData.Item(
+                        identifier: enumCase.identifier,
+                        function: ".\(enumCase.identifier)(\(label)try container.\(functionName)(\(typeDescription), forKey: key))"
+                    )
+                }
+        )
     }
 }

@@ -8,10 +8,7 @@
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-public struct OneOfEncodableMacro: MacroMetaProviding {
-    static let name: String = "OneOfEncodable"
-    static let domain: String = "\(Self.self)"
-}
+public struct OneOfEncodableMacro {}
 
 extension OneOfEncodableMacro: ExtensionMacro {
     private static let expectedConformances: Set<Conformance> = [.Encodable]
@@ -23,15 +20,16 @@ extension OneOfEncodableMacro: ExtensionMacro {
         conformingTo _: [TypeSyntax],
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
-        let existingConformances = Conformance.makeConformances(declaration: declaration)
-        let neededConformances = expectedConformances.subtracting(existingConformances)
-        return try OneOfMacroBase.expansion(
-            of: node,
-            attachedTo: declaration,
-            providingExtensionsOf: type,
-            conformingTo: neededConformances.map { TypeSyntax(stringLiteral: $0.rawValue) },
-            in: context,
-            macro: Self.self
-        )
+        try withMacro(Self.self, in: context) {
+            let existingConformances = Conformance.makeConformances(declaration: declaration)
+            let neededConformances = expectedConformances.subtracting(existingConformances)
+            return try OneOfMacroBase.expansion(
+                of: node,
+                attachedTo: declaration,
+                providingExtensionsOf: type,
+                conformingTo: neededConformances.map { TypeSyntax(stringLiteral: $0.rawValue) },
+                in: context
+            )
+        }
     }
 }

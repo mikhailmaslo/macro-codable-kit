@@ -11,6 +11,7 @@ import SwiftSyntax
 protocol Instance {
     var declaration: any DeclGroupSyntax { get }
 
+    var isStruct: Bool { get }
     var members: [Decl] { get }
 }
 
@@ -20,14 +21,16 @@ extension Instance {
 
 final class InstanceImpl: Instance {
     let declaration: any DeclGroupSyntax
-
+    let isStruct: Bool
     let members: [Decl]
 
     init?(declaration: any DeclGroupSyntax) {
         if let `struct` = Struct(declaration) {
             members = `struct`.members
+            isStruct = true
         } else if let `class` = ClassDecl(declaration) {
             members = `class`.members
+            isStruct = false
         } else {
             return nil
         }

@@ -12,37 +12,31 @@ import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
 struct AllOfMacroBase {
-    static var domain = ""
-    static var name = ""
-
-    static func expansion<Macro: MacroMetaProviding>(
-        of node: AttributeSyntax,
+    static func expansion(
+        of _: AttributeSyntax,
         attachedTo declaration: some DeclGroupSyntax,
         providingExtensionsOf type: some TypeSyntaxProtocol,
         conformingTo protocols: [TypeSyntax],
-        in context: some MacroExpansionContext,
-        macro _: Macro.Type
+        in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
-        domain = Macro.domain
-        name = Macro.name
+        let expander = InstanceExpander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .singleValue))
+        let conformances = Conformance.makeConformances(protocols.map(\.trimmedDescription))
 
-        let expander = Expander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .singleValue))
-
-        guard let instance = expander.ensureStructOrClassDecl(declaration: declaration) else {
-            context.diagnose(Diagnostic.requiresStructOrClass.diagnose(at: node))
+        let buildingData: CodableBuildingData
+        do {
+            buildingData = try expander.verify(declaration: declaration, strategy: .singleValue, conformances: conformances)
+        } catch {
             return []
         }
 
-        let builder = expander.extensionCodeBuilder(instance: instance, type: type, conformances: Conformance.makeConformances(protocols.map(\.trimmedDescription)))
-
-        var formattedCode = ""
+        let formattedCode: String
         do {
-            formattedCode = try expander.generateAndFormat(codeBuilder: builder)
+            let codeBuilder = expander.extensionCodeBuilder(type: type, buildingData: buildingData, conformances: conformances)
+            formattedCode = try expander.generateAndFormat(codeBuilder: codeBuilder)
         } catch {
-            print("Couldn't format code = \(builder.build()) with error = \(error)")
             context.diagnose(
-                Diagnostic
-                    .internalError(message: "Internal Error. Couldn't format code")
+                CommonDiagnostic
+                    .internalError(message: "Internal Error = \(error). Couldn't format code")
                     .diagnose(at: declaration)
             )
             return []
@@ -53,10 +47,9 @@ struct AllOfMacroBase {
         }
 
         guard let extensionDecl = expander.mapToExtensionDeclSyntax(code: formattedCode) else {
-            print("Couldn't expand code = \(formattedCode)")
             context.diagnose(
-                Diagnostic
-                    .internalError(message: "Internal Error. Couldn't create extension")
+                CommonDiagnostic
+                    .internalError(message: "Internal Error. Couldn't create extension from code = \(formattedCode)")
                     .diagnose(at: declaration)
             )
             return []

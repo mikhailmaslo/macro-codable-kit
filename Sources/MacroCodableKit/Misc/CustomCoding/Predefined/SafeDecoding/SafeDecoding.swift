@@ -1,6 +1,6 @@
 //
 //  SafeDecoding.swift
-//  
+//
 //
 //  Created by Mikhail Maslo on 04.10.23.
 //

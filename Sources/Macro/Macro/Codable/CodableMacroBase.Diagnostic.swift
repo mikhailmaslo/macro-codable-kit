@@ -10,17 +10,17 @@ import SwiftDiagnostics
 
 extension CodableMacroBase {
     enum Diagnostic {
-        static var requiresStructOrClass: SimpleDiagnosticMessage {
+        static var requiresStruct: SimpleDiagnosticMessage {
             .error(
-                message: "'\(CodableMacroBase.name)' macro can only be applied to a struct or to a class",
-                diagnosticID: MessageID(domain: CodableMacroBase.domain, id: #function)
+                message: "'@\(MacroConfiguration.current.name)' macro can only be applied to a struct",
+                diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }
 
         static func internalError(message: String) -> SimpleDiagnosticMessage {
             .errorWithContext(
                 message: message,
-                diagnosticID: MessageID(domain: CodableMacroBase.domain, id: #function)
+                diagnosticID: MessageID(domain: MacroConfiguration.current.name, id: #function)
             )
         }
     }

@@ -6,8 +6,9 @@
 //
 
 protocol CodableBuilderFactory {
-    func makeDecoderBuilder(instance: Instance) -> any CodeBuildable
-    func makeEncoderBuilder(instance: Instance) -> any CodeBuildable
+    func makeCodingKeysBuilder(buildingData: CodingKeysBuilder.BuildingData) -> CodeBuildable
+    func makeDecoderBuilder(buildingData: DecodableBuilder.BuildingData) -> CodeBuildable
+    func makeEncoderBuilder(buildingData: EncodableBuilder.BuildingData) -> CodeBuildable
 }
 
 final class DefaultCodableBuilderFactoryImpl: CodableBuilderFactory {
@@ -17,19 +18,15 @@ final class DefaultCodableBuilderFactoryImpl: CodableBuilderFactory {
         self.strategy = strategy
     }
 
-    func makeDecoderBuilder(instance: Instance) -> CodeBuildable {
-        DefaultDecodableBuilder(
-            accessModifier: instance.isPublic ? .public : nil,
-            strategy: strategy,
-            members: instance.members
-        )
+    func makeCodingKeysBuilder(buildingData: CodingKeysBuilder.BuildingData) -> CodeBuildable {
+        CodingKeysBuilder(buildingData: buildingData)
     }
 
-    func makeEncoderBuilder(instance: Instance) -> CodeBuildable {
-        DefaultEncodableBuilder(
-            accessModifier: instance.isPublic ? .public : nil,
-            strategy: strategy,
-            members: instance.members
-        )
+    func makeDecoderBuilder(buildingData: DecodableBuilder.BuildingData) -> CodeBuildable {
+        DecodableBuilder(buildingData: buildingData)
+    }
+
+    func makeEncoderBuilder(buildingData: EncodableBuilder.BuildingData) -> CodeBuildable {
+        EncodableBuilder(buildingData: buildingData)
     }
 }
