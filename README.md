@@ -273,7 +273,7 @@ In the example above, `@CustomCoding(SafeDecoding)` will catch and forward any d
 
 ## Known Limitations
 
-- [@Codable](#basics---codable), [@AllOfCodable] are only applicable to `struct` 
+- [@Codable](#basics---codable), [@AllOfCodable](#allofcodable) are only applicable to `struct` 
 
 ## Acknowledgments
 
