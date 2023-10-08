@@ -20,6 +20,7 @@
     - [@CustomCoding](#customcoding)
 - [Installation](#installation)
   - [Swift Package Manager](#swift-package-manager)
+- [Known limitations](#knownlimitations)
 - [Acknowledgments](#acknowledgments)
 
 ## Motivation
@@ -127,9 +128,13 @@ struct SocialUser {
 @OneOfCodable
 enum PaymentMethod {
   case card(DebitCardPayload)
-  case applePay(ApplePayPayload)
+  case applePay(payload: ApplePayPayload)
+  case sepa(_ payload: SepaPayload)
 }
-// json: either { "card": { ... DebitCardPayload ... } } or { "applePay": { ... ApplePayPayload ... } }
+// valid jsons:
+// { "card": { ... DebitCardPayload ... }
+// { "applePay": { ... ApplePayPayload ... } }
+// { "sepa": { ... SepaPayload ... } }
 ```
 
 ### Annotations
@@ -265,6 +270,10 @@ In the example above, `@CustomCoding(SafeDecoding)` will catch and forward any d
 ## Installation
 
 ### Swift Package Manager
+
+## Known Limitations
+
+- [@Codable](#basics---codable), [@AllOfCodable] are only applicable to `struct` 
 
 ## Acknowledgments
 
