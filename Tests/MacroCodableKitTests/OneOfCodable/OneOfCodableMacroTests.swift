@@ -11,7 +11,7 @@ import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import XCTest
 
-private let isRecording = true
+private let isRecording = false
 
 final class OneOfCodableMacroTests: XCTestCase {
     func test() {
