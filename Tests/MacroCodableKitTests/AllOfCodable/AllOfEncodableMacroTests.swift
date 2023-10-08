@@ -1,6 +1,6 @@
 //
 //  AllOfEncodableMacroTests.swift
-//  
+//
 //
 //  Created by Mikhail Maslo on 07.10.23.
 //

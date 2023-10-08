@@ -1,6 +1,6 @@
 //
 //  DecodableBuilder+Instance.swift
-//  
+//
 //
 //  Created by Mikhail Maslo on 07.10.23.
 //
@@ -27,7 +27,7 @@ extension DecodableBuilder {
 
                     let knownAttributes = variable.knownAttributes()
                     try variable.verify(knownAttributes)
-                    
+
                     guard variable.isStoredProperty else {
                         return nil
                     }

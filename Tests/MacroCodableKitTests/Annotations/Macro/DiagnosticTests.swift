@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Mikhail Maslo on 07.10.23.
 //
@@ -137,7 +137,7 @@ final class DiagnosticTests: XCTestCase {
         withMacroTesting(
             isRecording: isRecording,
             macros: [
-                "Codable": CodableMacro.self
+                "Codable": CodableMacro.self,
             ]
         ) {
             assertMacro {

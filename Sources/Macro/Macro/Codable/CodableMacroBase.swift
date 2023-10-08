@@ -13,7 +13,7 @@ import SwiftSyntaxMacros
 
 struct CodableMacroBase {
     static func expansion(
-        of node: AttributeSyntax,
+        of _: AttributeSyntax,
         attachedTo declaration: some DeclGroupSyntax,
         providingExtensionsOf type: some TypeSyntaxProtocol,
         conformingTo protocols: [TypeSyntax],

@@ -156,7 +156,7 @@ extension EncodableBuilder {
             items: enumDecl.cases
                 .compactMap { enumCase -> EncodableBuilder.BuildingData.Item? in
                     guard
-                        case .associatedValue(let parameters) = enumCase.value,
+                        case let .associatedValue(parameters) = enumCase.value,
                         parameters.count == 1,
                         let parameter = parameters.first
                     else {
@@ -189,7 +189,7 @@ extension DecodableBuilder {
             items: enumDecl.cases
                 .compactMap { enumCase -> DecodableBuilder.BuildingData.Item? in
                     guard
-                        case .associatedValue(let parameters) = enumCase.value,
+                        case let .associatedValue(parameters) = enumCase.value,
                         parameters.count == 1,
                         let parameter = parameters.first
                     else {

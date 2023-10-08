@@ -16,7 +16,7 @@ extension CodingKeysBuilder {
             accessModifier: accessModifier,
             items: try instance.members
                 .compactMap { member -> CodingKeysBuilder.BuildingData.Item? in
-                    guard 
+                    guard
                         let variable = member.asVariable,
                         !variable.isStatic
                     else {

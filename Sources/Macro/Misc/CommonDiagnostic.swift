@@ -16,7 +16,7 @@ enum CommonDiagnostic {
         )
     }
 
-    static func redundantAttributeError(annotation: String, variable: String) -> SimpleDiagnosticMessage {
+    static func redundantAttributeError(annotation: String, variable _: String) -> SimpleDiagnosticMessage {
         .error(
             message: "'@\(annotation)' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.",
             diagnosticID: MessageID(id: #function)

@@ -13,6 +13,7 @@ struct EncodableBuilder: CodeBuildable {
             let identifier: String
             let function: String
         }
+
         let accessModifier: AccessModifier?
         let strategy: CodableStrategy
         let items: [Item]
