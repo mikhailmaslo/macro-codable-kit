@@ -24,45 +24,45 @@ final class OneOfDecodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @OneOfDecodable
-                struct NoApplicable {}
+                struct NoApplicable\(sutSuffix) {}
                 """
             } diagnostics: {
                 """
                 @OneOfDecodable
                 ╰─ 🛑 '@OneOfDecodable' macro can only be applied to a enum
-                struct NoApplicable {}
+                struct NoApplicable__testing__ {}
                 """
             }
 
             assertMacro {
                 """
                 @OneOfDecodable
-                class NoApplicable {}
+                class NoApplicable\(sutSuffix) {}
                 """
             } diagnostics: {
                 """
                 @OneOfDecodable
                 ╰─ 🛑 '@OneOfDecodable' macro can only be applied to a enum
-                class NoApplicable {}
+                class NoApplicable__testing__ {}
                 """
             }
 
             assertMacro {
                 """
                 @OneOfDecodable
-                enum Applicable {
+                enum Applicable\(sutSuffix) {
                     case int(Int)
                     case optionalInt(Int?)
                 }
                 """
             } expansion: {
                 """
-                enum Applicable {
+                enum Applicable__testing__ {
                     case int(Int)
                     case optionalInt(Int?)
                 }
 
-                extension Applicable: Decodable {
+                extension Applicable__testing__: Decodable {
                     enum CodingKeys: String, CodingKey {
                         case int
                         case optionalInt
@@ -88,49 +88,79 @@ final class OneOfDecodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @OneOfDecodable
-                enum NoCodableExample: Encodable {
+                enum NoCodableExample\(sutSuffix) {
                     case int(Int)
                 }
 
                 @OneOfDecodable
-                enum OnlyEncodableExample: Encodable {
+                enum OnlyEncodableExample\(sutSuffix): Encodable {
                     case int(Int)
                 }
 
                 @OneOfDecodable
-                enum OnlyDecodableExample: Decodable {
+                enum OnlyDecodableExample\(sutSuffix): Decodable {
                     case int(Int)
                 }
 
                 @OneOfDecodable
-                enum EncodableAndCodableExample: Encodable, Decodable {
+                enum EncodableAndCodableExample\(sutSuffix): Encodable, Decodable {
                     case int(Int)
                 }
 
                 @OneOfDecodable
-                enum CodableExample: Codable {
+                enum CodableExample\(sutSuffix): Codable {
                     case int(Int)
                 }
                 """
-            } expansion: {
+            } diagnostics: {
                 """
-                enum NoCodableExample: Encodable {
-                    case int(Int)
-                }
-                enum OnlyEncodableExample: Encodable {
-                    case int(Int)
-                }
-                enum OnlyDecodableExample: Decodable {
-                    case int(Int)
-                }
-                enum EncodableAndCodableExample: Encodable, Decodable {
-                    case int(Int)
-                }
-                enum CodableExample: Codable {
+                @OneOfDecodable
+                enum NoCodableExample__testing__ {
                     case int(Int)
                 }
 
-                extension NoCodableExample: Decodable {
+                @OneOfDecodable
+                enum OnlyEncodableExample__testing__: Encodable {
+                    case int(Int)
+                }
+
+                @OneOfDecodable
+                ╰─ ⚠️ '@OneOfDecodable' macro has not effect since 'OnlyDecodableExample__testing__' already conformes to ["Decodable"]. Consider removing '@OneOfDecodable'
+                enum OnlyDecodableExample__testing__: Decodable {
+                    case int(Int)
+                }
+
+                @OneOfDecodable
+                ╰─ ⚠️ '@OneOfDecodable' macro has not effect since 'EncodableAndCodableExample__testing__' already conformes to ["Decodable"]. Consider removing '@OneOfDecodable'
+                enum EncodableAndCodableExample__testing__: Encodable, Decodable {
+                    case int(Int)
+                }
+
+                @OneOfDecodable
+                ╰─ ⚠️ '@OneOfDecodable' macro has not effect since 'CodableExample__testing__' already conformes to ["Decodable"]. Consider removing '@OneOfDecodable'
+                enum CodableExample__testing__: Codable {
+                    case int(Int)
+                }
+                """
+            }expansion: {
+                """
+                enum NoCodableExample__testing__ {
+                    case int(Int)
+                }
+                enum OnlyEncodableExample__testing__: Encodable {
+                    case int(Int)
+                }
+                enum OnlyDecodableExample__testing__: Decodable {
+                    case int(Int)
+                }
+                enum EncodableAndCodableExample__testing__: Encodable, Decodable {
+                    case int(Int)
+                }
+                enum CodableExample__testing__: Codable {
+                    case int(Int)
+                }
+
+                extension NoCodableExample__testing__: Decodable {
                     enum CodingKeys: String, CodingKey {
                         case int
                     }
@@ -148,7 +178,7 @@ final class OneOfDecodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension OnlyEncodableExample: Decodable {
+                extension OnlyEncodableExample__testing__: Decodable {
                     enum CodingKeys: String, CodingKey {
                         case int
                     }
@@ -171,13 +201,13 @@ final class OneOfDecodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @OneOfDecodable
-                enum Empty {}
+                enum Empty\(sutSuffix) {}
                 """
             } expansion: {
                 """
-                enum Empty {}
+                enum Empty__testing__ {}
 
-                extension Empty: Decodable {
+                extension Empty__testing__: Decodable {
                     init(from decoder: Decoder) throws {
                     }
                 }
@@ -187,41 +217,41 @@ final class OneOfDecodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @OneOfDecodable
-                enum NoPublicCodable1 {
+                enum NoPublicCodable1\(sutSuffix) {
                     case int(Int)
                 }
 
                 @OneOfDecodable
-                private enum NoPublicCodable2 {
+                private enum NoPublicCodable2\(sutSuffix) {
                     case int(Int)
                 }
 
                 @OneOfDecodable
-                internal enum NoPublicCodable3 {
+                internal enum NoPublicCodable3\(sutSuffix) {
                     case int(Int)
                 }
 
                 @OneOfDecodable
-                internal enum PublicCodable1 {
+                internal enum PublicCodable1\(sutSuffix) {
                     case int(Int)
                 }
                 """
             } expansion: {
                 """
-                enum NoPublicCodable1 {
+                enum NoPublicCodable1__testing__ {
                     case int(Int)
                 }
-                private enum NoPublicCodable2 {
+                private enum NoPublicCodable2__testing__ {
                     case int(Int)
                 }
-                internal enum NoPublicCodable3 {
+                internal enum NoPublicCodable3__testing__ {
                     case int(Int)
                 }
-                internal enum PublicCodable1 {
+                internal enum PublicCodable1__testing__ {
                     case int(Int)
                 }
 
-                extension NoPublicCodable1: Decodable {
+                extension NoPublicCodable1__testing__: Decodable {
                     enum CodingKeys: String, CodingKey {
                         case int
                     }
@@ -239,7 +269,7 @@ final class OneOfDecodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension NoPublicCodable2: Decodable {
+                extension NoPublicCodable2__testing__: Decodable {
                     enum CodingKeys: String, CodingKey {
                         case int
                     }
@@ -257,7 +287,7 @@ final class OneOfDecodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension NoPublicCodable3: Decodable {
+                extension NoPublicCodable3__testing__: Decodable {
                     enum CodingKeys: String, CodingKey {
                         case int
                     }
@@ -275,7 +305,7 @@ final class OneOfDecodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension PublicCodable1: Decodable {
+                extension PublicCodable1__testing__: Decodable {
                     enum CodingKeys: String, CodingKey {
                         case int
                     }

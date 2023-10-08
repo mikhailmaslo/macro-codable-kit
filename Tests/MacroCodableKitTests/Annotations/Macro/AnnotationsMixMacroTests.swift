@@ -26,7 +26,7 @@ final class AnnotationsMixMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct DefaultValueBool {
+                struct DefaultValueBool\(sutSuffix) {
                     @ValueStrategy(SomeBoolStrategy)
                     @DefaultValue(BoolFalse)
                     let boolean1: Bool
@@ -38,12 +38,12 @@ final class AnnotationsMixMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct DefaultValueBool {
+                struct DefaultValueBool__testing__ {
                     let boolean1: Bool
                     let boolean2: Bool?
                 }
 
-                extension DefaultValueBool: Decodable, Encodable {
+                extension DefaultValueBool__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case boolean1
                         case boolean2

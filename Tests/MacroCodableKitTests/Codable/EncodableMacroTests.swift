@@ -26,33 +26,33 @@ final class EncodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Encodable
-                enum NoApplicable {}
+                enum NoApplicable\(sutSuffix) {}
                 """
             } diagnostics: {
                 """
                 @Encodable
                 ╰─ 🛑 '@Encodable' macro can only be applied to a struct
-                enum NoApplicable {}
+                enum NoApplicable__testing__ {}
                 """
             }
 
             assertMacro {
                 """
                 @Encodable
-                class NoApplicable {}
+                class NoApplicable\(sutSuffix) {}
                 """
             } diagnostics: {
                 """
                 @Encodable
                 ╰─ 🛑 '@Encodable' macro can only be applied to a struct
-                class NoApplicable {}
+                class NoApplicable__testing__ {}
                 """
             }
 
             assertMacro {
                 """
                 @Encodable
-                struct Example {
+                struct Example\(sutSuffix) {
                     let brand: Brand?
                     let company: Company
 
@@ -71,7 +71,7 @@ final class EncodableMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct Example {
+                struct Example__testing__ {
                     let brand: Brand?
                     let company: Company
                     let omittedCompany: Company
@@ -82,7 +82,7 @@ final class EncodableMacroTests: XCTestCase {
                     let available: Bool
                 }
 
-                extension Example: Encodable {
+                extension Example__testing__: Encodable {
                     enum CodingKeys: String, CodingKey {
                         case brand
                         case company
@@ -103,41 +103,65 @@ final class EncodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Encodable
-                struct NoCodableExample {
+                struct NoCodableExample\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @Encodable
-                struct OnlyEncodableExample: Encodable {
+                struct OnlyEncodableExample\(sutSuffix): Encodable {
                     let brand: Brand
                 }
 
                 @Encodable
-                struct OnlyDecodableExample: Decodable {
+                struct OnlyDecodableExample\(sutSuffix): Decodable {
                     let brand: Brand
                 }
 
                 @Encodable
-                struct CodableExample: Codable {
+                struct CodableExample\(sutSuffix): Codable {
+                    let brand: Brand
+                }
+                """
+            } diagnostics: {
+                """
+                @Encodable
+                struct NoCodableExample__testing__ {
+                    let brand: Brand
+                }
+
+                @Encodable
+                ╰─ ⚠️ '@Encodable' macro has not effect since 'OnlyEncodableExample__testing__' already conformes to ["Encodable"]. Consider removing '@Encodable'
+                struct OnlyEncodableExample__testing__: Encodable {
+                    let brand: Brand
+                }
+
+                @Encodable
+                struct OnlyDecodableExample__testing__: Decodable {
+                    let brand: Brand
+                }
+
+                @Encodable
+                ╰─ ⚠️ '@Encodable' macro has not effect since 'CodableExample__testing__' already conformes to ["Encodable"]. Consider removing '@Encodable'
+                struct CodableExample__testing__: Codable {
                     let brand: Brand
                 }
                 """
             } expansion: {
                 """
-                struct NoCodableExample {
+                struct NoCodableExample__testing__ {
                     let brand: Brand
                 }
-                struct OnlyEncodableExample: Encodable {
+                struct OnlyEncodableExample__testing__: Encodable {
                     let brand: Brand
                 }
-                struct OnlyDecodableExample: Decodable {
+                struct OnlyDecodableExample__testing__: Decodable {
                     let brand: Brand
                 }
-                struct CodableExample: Codable {
+                struct CodableExample__testing__: Codable {
                     let brand: Brand
                 }
 
-                extension NoCodableExample: Encodable {
+                extension NoCodableExample__testing__: Encodable {
                     enum CodingKeys: String, CodingKey {
                         case brand
                     }
@@ -147,7 +171,7 @@ final class EncodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension OnlyDecodableExample: Encodable {
+                extension OnlyDecodableExample__testing__: Encodable {
                     enum CodingKeys: String, CodingKey {
                         case brand
                     }
@@ -162,42 +186,42 @@ final class EncodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Encodable
-                struct Empty1 {
+                struct Empty1\(sutSuffix) {
                     @OmitCoding
                     let brand: Brand
                 }
 
                 @Encodable
-                struct Empty2 {
+                struct Empty2\(sutSuffix) {
                 }
 
                 @Encodable
-                struct Empty3 {
+                struct Empty3\(sutSuffix) {
                     var string: String { "" }
                 }
                 """
             } expansion: {
                 """
-                struct Empty1 {
+                struct Empty1__testing__ {
                     let brand: Brand
                 }
-                struct Empty2 {
+                struct Empty2__testing__ {
                 }
-                struct Empty3 {
+                struct Empty3__testing__ {
                     var string: String { "" }
                 }
 
-                extension Empty1: Encodable {
+                extension Empty1__testing__: Encodable {
                     func encode(to encoder: Encoder) throws {
                     }
                 }
 
-                extension Empty2: Encodable {
+                extension Empty2__testing__: Encodable {
                     func encode(to encoder: Encoder) throws {
                     }
                 }
 
-                extension Empty3: Encodable {
+                extension Empty3__testing__: Encodable {
                     func encode(to encoder: Encoder) throws {
                     }
                 }
@@ -207,39 +231,39 @@ final class EncodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Encodable
-                struct NoPublicCodable1 {
+                struct NoPublicCodable1\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @Encodable
-                private struct NoPublicCodable2 {
+                private struct NoPublicCodable2\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @Encodable
-                internal struct NoPublicCodable3 {
+                internal struct NoPublicCodable3\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @Encodable
-                public struct WithPublicCodable {
+                public struct WithPublicCodable\(sutSuffix) {
                 }
                 """
             } expansion: {
                 """
-                struct NoPublicCodable1 {
+                struct NoPublicCodable1__testing__ {
                     let brand: Brand
                 }
-                private struct NoPublicCodable2 {
+                private struct NoPublicCodable2__testing__ {
                     let brand: Brand
                 }
-                internal struct NoPublicCodable3 {
+                internal struct NoPublicCodable3__testing__ {
                     let brand: Brand
                 }
-                public struct WithPublicCodable {
+                public struct WithPublicCodable__testing__ {
                 }
 
-                extension NoPublicCodable1: Encodable {
+                extension NoPublicCodable1__testing__: Encodable {
                     enum CodingKeys: String, CodingKey {
                         case brand
                     }
@@ -249,7 +273,7 @@ final class EncodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension NoPublicCodable2: Encodable {
+                extension NoPublicCodable2__testing__: Encodable {
                     enum CodingKeys: String, CodingKey {
                         case brand
                     }
@@ -259,7 +283,7 @@ final class EncodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension NoPublicCodable3: Encodable {
+                extension NoPublicCodable3__testing__: Encodable {
                     enum CodingKeys: String, CodingKey {
                         case brand
                     }
@@ -269,7 +293,7 @@ final class EncodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension WithPublicCodable: Encodable {
+                extension WithPublicCodable__testing__: Encodable {
                     public func encode(to encoder: Encoder) throws {
                     }
                 }

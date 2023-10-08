@@ -16,22 +16,37 @@ struct AllOfMacroBase {
         of _: AttributeSyntax,
         attachedTo declaration: some DeclGroupSyntax,
         providingExtensionsOf type: some TypeSyntaxProtocol,
-        conformingTo protocols: [TypeSyntax],
+        conformancesToGenerate: Set<Conformance>,
+        expectedConformances: Set<Conformance>,
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
+        let checker = ConformanceDiagnosticChecker(
+            config: ConformanceDiagnosticChecker.Config(
+                replacementMacroName: [
+                    .Decodable: "@\(MacroConfiguration.makeName(macro: AllOfEncodableMacro.self))",
+                    .Encodable: "@\(MacroConfiguration.makeName(macro: AllOfDecodableMacro.self))"
+                ]
+            )
+        )
+        try checker.verify(
+            type: type,
+            declaration: declaration,
+            expectedConformances: expectedConformances,
+            conformancesToGenerate: conformancesToGenerate
+        )
+
         let expander = InstanceExpander(codableFactory: DefaultCodableBuilderFactoryImpl(strategy: .singleValue))
-        let conformances = Conformance.makeConformances(protocols.map(\.trimmedDescription))
 
         let buildingData: CodableBuildingData
         do {
-            buildingData = try expander.verify(declaration: declaration, strategy: .singleValue, conformances: conformances)
+            buildingData = try expander.verify(declaration: declaration, strategy: .singleValue, conformances: conformancesToGenerate)
         } catch {
             return []
         }
 
         let formattedCode: String
         do {
-            let codeBuilder = expander.extensionCodeBuilder(type: type, buildingData: buildingData, conformances: conformances)
+            let codeBuilder = expander.extensionCodeBuilder(type: type, buildingData: buildingData, conformances: conformancesToGenerate)
             formattedCode = try expander.generateAndFormat(codeBuilder: codeBuilder)
         } catch {
             context.diagnose(

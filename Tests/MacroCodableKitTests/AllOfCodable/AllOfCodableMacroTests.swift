@@ -25,33 +25,33 @@ final class AllOfCodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @AllOfCodable
-                enum NotApplicable {}
+                enum NotApplicable\(sutSuffix) {}
                 """
             } diagnostics: {
                 """
                 @AllOfCodable
                 ╰─ 🛑 '@AllOfCodable' macro can only be applied to a struct
-                enum NotApplicable {}
+                enum NotApplicable__testing__ {}
                 """
             }
 
             assertMacro {
                 """
                 @AllOfCodable
-                class NotApplicable {}
+                class NotApplicable\(sutSuffix) {}
                 """
             } diagnostics: {
                 """
                 @AllOfCodable
                 ╰─ 🛑 '@AllOfCodable' macro can only be applied to a struct
-                class NotApplicable {}
+                class NotApplicable__testing__ {}
                 """
             }
 
             assertMacro {
                 """
                 @AllOfCodable
-                struct Example {
+                struct Example\(sutSuffix) {
                     let brand: Brand?
                     let company: Company
                     @OmitCoding
@@ -62,7 +62,7 @@ final class AllOfCodableMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct Example {
+                struct Example__testing__ {
                     let brand: Brand?
                     let company: Company
                     let omittedCompany: Company
@@ -70,7 +70,7 @@ final class AllOfCodableMacroTests: XCTestCase {
                     var string: String { "" }
                 }
 
-                extension Example: Decodable, Encodable {
+                extension Example__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                         let container = try decoder.singleValueContainer()
                         self.brand = try container.decodeIfPresent(Brand.self)
@@ -87,41 +87,66 @@ final class AllOfCodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @AllOfCodable
-                struct NoCodableExample {
+                struct NoCodableExample\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @AllOfCodable
-                struct OnlyEncodableExample: Encodable {
+                struct OnlyEncodableExample\(sutSuffix): Encodable {
                     let brand: Brand
                 }
 
                 @AllOfCodable
-                struct OnlyDecodableExample: Decodable {
+                struct OnlyDecodableExample\(sutSuffix): Decodable {
                     let brand: Brand
                 }
 
                 @AllOfCodable
-                struct CodableExample: Codable {
+                struct CodableExample\(sutSuffix): Codable {
                     let brand: Brand
                 }
                 """
-            } expansion: {
+            } diagnostics: {
                 """
-                struct NoCodableExample {
-                    let brand: Brand
-                }
-                struct OnlyEncodableExample: Encodable {
-                    let brand: Brand
-                }
-                struct OnlyDecodableExample: Decodable {
-                    let brand: Brand
-                }
-                struct CodableExample: Codable {
+                @AllOfCodable
+                struct NoCodableExample__testing__ {
                     let brand: Brand
                 }
 
-                extension NoCodableExample: Decodable, Encodable {
+                @AllOfCodable
+                ╰─ ⚠️ '@AllOfCodable' macro won't generate 'Encodable' conformance since 'OnlyEncodableExample__testing__' already conformes to it. Consider using '@AllOfDecodable' instead
+                struct OnlyEncodableExample__testing__: Encodable {
+                    let brand: Brand
+                }
+
+                @AllOfCodable
+                ╰─ ⚠️ '@AllOfCodable' macro won't generate 'Decodable' conformance since 'OnlyDecodableExample__testing__' already conformes to it. Consider using '@AllOfEncodable' instead
+                struct OnlyDecodableExample__testing__: Decodable {
+                    let brand: Brand
+                }
+
+                @AllOfCodable
+                ╰─ ⚠️ '@AllOfCodable' macro has not effect since 'CodableExample__testing__' already conformes to ["Decodable", "Encodable"]. Consider removing '@AllOfCodable'
+                struct CodableExample__testing__: Codable {
+                    let brand: Brand
+                }
+                """
+            }expansion: {
+                """
+                struct NoCodableExample__testing__ {
+                    let brand: Brand
+                }
+                struct OnlyEncodableExample__testing__: Encodable {
+                    let brand: Brand
+                }
+                struct OnlyDecodableExample__testing__: Decodable {
+                    let brand: Brand
+                }
+                struct CodableExample__testing__: Codable {
+                    let brand: Brand
+                }
+
+                extension NoCodableExample__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                         let container = try decoder.singleValueContainer()
                         self.brand = try container.decode(Brand.self)
@@ -131,14 +156,14 @@ final class AllOfCodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension OnlyEncodableExample: Decodable {
+                extension OnlyEncodableExample__testing__: Decodable {
                     init(from decoder: Decoder) throws {
                         let container = try decoder.singleValueContainer()
                         self.brand = try container.decode(Brand.self)
                     }
                 }
 
-                extension OnlyDecodableExample: Encodable {
+                extension OnlyDecodableExample__testing__: Encodable {
                     func encode(to encoder: Encoder) throws {
                         try self.brand.encode(to: encoder)
                     }
@@ -149,46 +174,46 @@ final class AllOfCodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @AllOfCodable
-                struct Empty1 {
+                struct Empty1\(sutSuffix) {
                     @OmitCoding
                     let brand: Brand
                 }
 
                 @AllOfCodable
-                struct Empty2 {
+                struct Empty2\(sutSuffix) {
                 }
 
                 @AllOfCodable
-                struct Empty3 {
+                struct Empty3\(sutSuffix) {
                     var string: String { "" }
                 }
                 """
             } expansion: {
                 """
-                struct Empty1 {
+                struct Empty1__testing__ {
                     let brand: Brand
                 }
-                struct Empty2 {
+                struct Empty2__testing__ {
                 }
-                struct Empty3 {
+                struct Empty3__testing__ {
                     var string: String { "" }
                 }
 
-                extension Empty1: Decodable, Encodable {
+                extension Empty1__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                     }
                     func encode(to encoder: Encoder) throws {
                     }
                 }
 
-                extension Empty2: Decodable, Encodable {
+                extension Empty2__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                     }
                     func encode(to encoder: Encoder) throws {
                     }
                 }
 
-                extension Empty3: Decodable, Encodable {
+                extension Empty3__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                     }
                     func encode(to encoder: Encoder) throws {
@@ -200,39 +225,39 @@ final class AllOfCodableMacroTests: XCTestCase {
             assertMacro {
                 """
                 @AllOfCodable
-                struct NoPublicCodable1 {
+                struct NoPublicCodable1\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @AllOfCodable
-                private struct NoPublicCodable2 {
+                private struct NoPublicCodable2\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @AllOfCodable
-                internal struct NoPublicCodable3 {
+                internal struct NoPublicCodable3\(sutSuffix) {
                     let brand: Brand
                 }
 
                 @AllOfCodable
-                public struct WithPublicCodable {
+                public struct WithPublicCodable\(sutSuffix) {
                 }
                 """
             } expansion: {
                 """
-                struct NoPublicCodable1 {
+                struct NoPublicCodable1__testing__ {
                     let brand: Brand
                 }
-                private struct NoPublicCodable2 {
+                private struct NoPublicCodable2__testing__ {
                     let brand: Brand
                 }
-                internal struct NoPublicCodable3 {
+                internal struct NoPublicCodable3__testing__ {
                     let brand: Brand
                 }
-                public struct WithPublicCodable {
+                public struct WithPublicCodable__testing__ {
                 }
 
-                extension NoPublicCodable1: Decodable, Encodable {
+                extension NoPublicCodable1__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                         let container = try decoder.singleValueContainer()
                         self.brand = try container.decode(Brand.self)
@@ -242,7 +267,7 @@ final class AllOfCodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension NoPublicCodable2: Decodable, Encodable {
+                extension NoPublicCodable2__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                         let container = try decoder.singleValueContainer()
                         self.brand = try container.decode(Brand.self)
@@ -252,7 +277,7 @@ final class AllOfCodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension NoPublicCodable3: Decodable, Encodable {
+                extension NoPublicCodable3__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                         let container = try decoder.singleValueContainer()
                         self.brand = try container.decode(Brand.self)
@@ -262,7 +287,7 @@ final class AllOfCodableMacroTests: XCTestCase {
                     }
                 }
 
-                extension WithPublicCodable: Decodable, Encodable {
+                extension WithPublicCodable__testing__: Decodable, Encodable {
                     public init(from decoder: Decoder) throws {
                     }
                     public func encode(to encoder: Encoder) throws {

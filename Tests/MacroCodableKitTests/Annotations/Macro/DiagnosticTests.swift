@@ -29,7 +29,7 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     @OmitCoding
                     @OmitCoding
                     let a: Int
@@ -38,7 +38,7 @@ final class DiagnosticTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     @OmitCoding
                     ╰─ 🛑 '@Omitcoding' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @OmitCoding
@@ -50,7 +50,7 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     @CodingKey("_a")
                     @CodingKey("_a")
                     let a: Int
@@ -59,7 +59,7 @@ final class DiagnosticTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     @CodingKey("_a")
                     ╰─ 🛑 '@Codingkey' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @CodingKey("_a")
@@ -71,7 +71,7 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     @ValueStrategy(Base64Data)
                     @ValueStrategy(Base64Data)
                     let string: String
@@ -80,7 +80,7 @@ final class DiagnosticTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     @ValueStrategy(Base64Data)
                     ╰─ 🛑 '@Valuestrategy' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @ValueStrategy(Base64Data)
@@ -92,7 +92,7 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     @DefaultValue(BoolTrue)
                     @DefaultValue(BoolFalse)
                     let bool: Bool
@@ -101,7 +101,7 @@ final class DiagnosticTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     @DefaultValue(BoolTrue)
                     ╰─ 🛑 '@Defaultvalue' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @DefaultValue(BoolFalse)
@@ -113,7 +113,7 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     @CustomCoding(SafeDecoding)
                     @CustomCoding(SafeDecoding)
                     let array: [Bool]
@@ -122,7 +122,7 @@ final class DiagnosticTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     @CustomCoding(SafeDecoding)
                     ╰─ 🛑 '@Customcoding' attribute has been applied more than once. Redundant attribute applications have no effect on the generated code and may cause confusion.
                     @CustomCoding(SafeDecoding)
@@ -143,14 +143,14 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     let a, b: Int
                 }
                 """
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     let a, b: Int
                     ┬────────────
                     ╰─ 🛑 '@Codable' macro is only applicable to declarations with an identifier followed by a type
@@ -161,14 +161,14 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     let a: Int, b: Int
                 }
                 """
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     let a: Int, b: Int
                     ┬─────────────────
                     ╰─ 🛑 '@Codable' macro is not applicable to compound declarations, declare each variable on a new line
@@ -179,7 +179,7 @@ final class DiagnosticTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Example {
+                struct Example\(sutSuffix) {
                     @DefaultValue(IntZero)
                     var a: Int { 0 }
                 }
@@ -187,7 +187,7 @@ final class DiagnosticTests: XCTestCase {
             } diagnostics: {
                 """
                 @Codable
-                struct Example {
+                struct Example__testing__ {
                     @DefaultValue(IntZero)
                     ╰─ 🛑 '@Codable' macro is only applicable to stored properties declared with an identifier followed by a type, example: `let variable: Int`
                     var a: Int { 0 }

@@ -25,7 +25,7 @@ final class ValueStrategyMacroTests: XCTestCase {
             assertMacro {
                 """
                 @Codable
-                struct Base64Struct {
+                struct Base64Struct\(sutSuffix) {
                     let data: Data
 
                     @ValueStrategy(Base64Data)
@@ -37,13 +37,13 @@ final class ValueStrategyMacroTests: XCTestCase {
                 """
             } expansion: {
                 """
-                struct Base64Struct {
+                struct Base64Struct__testing__ {
                     let data: Data
                     let data: Data
                     let data: Data?
                 }
 
-                extension Base64Struct: Decodable, Encodable {
+                extension Base64Struct__testing__: Decodable, Encodable {
                     enum CodingKeys: String, CodingKey {
                         case data
                         case data

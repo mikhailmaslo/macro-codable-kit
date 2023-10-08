@@ -7,7 +7,7 @@
 
 import SwiftSyntax
 
-enum Conformance: String {
+enum Conformance: String, CaseIterable {
     case Codable, Encodable, Decodable
 
     public static let aliases: [Conformance: Set<Conformance>] = [

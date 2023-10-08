@@ -32,6 +32,10 @@ struct MacroConfiguration {
 
     /// name is Macro type with dropped "Macro" suffix
     var name: String {
+        Self.makeName(macro: macro)
+    }
+
+    static func makeName(macro: Macro.Type) -> String {
         String("\(macro)".dropLast("Macro".count))
     }
 }
