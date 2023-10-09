@@ -31,7 +31,7 @@ jobs:
       image: swift:5.9
 
     env:
-      periphery-version: "2.16.0"
+      version: "2.16.0"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -41,16 +41,13 @@ jobs:
         id: cache-periphery
         with:
           path: "periphery"
-          key: "${{ env.periphery-version }}"
+          key: "2.16.0"
 
       - name: Install Perishery if needed
         if: steps.cache-periphery.outputs.cache-hit != 'true'
         run: |
-          # install make
           apt-get update && apt-get install -y build-essential
-          # clone periphery
-          git clone --depth 1 --branch "${{ env.periphery-version }}" https://github.com/peripheryapp/periphery.git
-          # build periphery
+          git clone --depth 1 --branch 2.16.0 https://github.com/peripheryapp/periphery.git
           cd periphery && make build_x86_64
           mv "$(make show_bin_path)" $GITHUB_WORKSPACE/periphery
 
