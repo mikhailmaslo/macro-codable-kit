@@ -31,13 +31,12 @@ jobs:
       image: swift:5.9
     
     steps:
-      - name: Checkout periphery
-        uses: actions/checkout@v2
-
-      - name: Install go-task
+      - name: Install periphery
         uses: jaxxstorm/action-install-gh-release@v1.10.0
         with: 
           repo: peripheryapp/periphery
-
-      - name: Test
-        run: swift test -v
+      - uses: supplypike/setup-bin@v3
+        with:
+          uri: 'curl https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip'
+          name: 'periphery'
+          version: '2.16.0'
