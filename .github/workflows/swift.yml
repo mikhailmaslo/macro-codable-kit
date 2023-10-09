@@ -47,13 +47,7 @@ jobs:
           cd periphery
           make build_x86_64
 
-      - name: Get Periphery binary path
-        id: get-bin-path
-        run: |
-          cd periphery
-          echo "::set-output name=bin_path::$(make show_bin_path)"
-
       - name: Run periphery
         run: |
-          ${steps.get-bin-path.outputs.bin_path} scan --strict SUPPORTS_MACCATALYST=NO
+          ./periphery/"$(make show_bin_path)" scan --strict SUPPORTS_MACCATALYST=NO
           
