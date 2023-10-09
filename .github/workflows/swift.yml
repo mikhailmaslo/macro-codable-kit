@@ -31,10 +31,6 @@ jobs:
       image: swift:5.9
     
     steps:
-      - name: Install periphery
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
-        with: 
-          repo: peripheryapp/periphery
       - uses: supplypike/setup-bin@v3
         with:
           uri: 'curl https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip'
