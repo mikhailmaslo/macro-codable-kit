@@ -34,10 +34,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install Curl
+        run: |
+          apt-get update && apt-get install -y curl
+
       - name: Download periphery
         run: |
-          apt install wget
-          wget https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip
+          curl -LO https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip
 
       - name: Unzip binary
         run: |
