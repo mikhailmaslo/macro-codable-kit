@@ -34,20 +34,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Curl
+      - name: Clone Periphery repository
         run: |
-          apt-get update && apt-get install -y curl
+          git clone https://github.com/peripheryapp/periphery.git
 
-      - name: Download periphery
+      - name: Build Periphery
         run: |
-          curl -LO https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip
+          cd periphery
+          make build_x86_64
 
-      - name: Unzip binary
+      - name: Get Periphery binary path
+        id: get-bin-path
         run: |
-          unzip periphery-2.16.0.zip
+          cd periphery
+          echo "::set-output name=bin_path::$(make show_bin_path)"
 
       - name: Run periphery
         run: |
-          cd $GITHUB_WORKSPACE
-          ./periphery scan --strict SUPPORTS_MACCATALYST=NO
+          ${steps.get-bin-path.outputs.bin_path} scan --strict SUPPORTS_MACCATALYST=NO
           
