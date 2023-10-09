@@ -29,25 +29,32 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: swift:5.9
-    
+
+    env:
+      periphery-version: "2.16.0"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install essential build tools
+      - name: Cache periphery
+        uses: actions/cache@v3.3.2
+        id: cache-periphery
+        with:
+          path: "periphery"
+          key: "${{ env.periphery-version }}"
+
+      - name: Install Perishery if needed
+        if: steps.cache-periphery.outputs.cache-hit != 'true'
         run: |
+          # install make
           apt-get update && apt-get install -y build-essential
-
-      - name: Clone Periphery repository
-        run: |
-          git clone https://github.com/peripheryapp/periphery.git
-
-      - name: Build Periphery
-        run: |
-          cd periphery
-          make build_x86_64
+          # clone periphery
+          git clone --depth 1 --branch "${{ env.periphery-version }}" https://github.com/peripheryapp/periphery.git
+          # build periphery
+          cd periphery && make build_x86_64
+          mv "$(make show_bin_path)" $GITHUB_WORKSPACE/periphery
 
       - name: Run periphery
         run: |
-          ./periphery/"$(make show_bin_path)" scan --strict SUPPORTS_MACCATALYST=NO
+          periphery scan --strict SUPPORTS_MACCATALYST=NO
           
