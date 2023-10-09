@@ -46,10 +46,6 @@ jobs:
         run: |
           unzip periphery-2.16.0.zip
 
-      - name: Move binary to workspace
-        run: |
-          mv periphery $GITHUB_WORKSPACE/periphery
-
       - name: Run periphery
         run: |
           cd $GITHUB_WORKSPACE
