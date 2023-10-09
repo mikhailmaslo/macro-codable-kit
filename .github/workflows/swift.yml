@@ -54,5 +54,5 @@ jobs:
 
       - name: Run periphery
         run: |
-          ./periphery scan --strict SUPPORTS_MACCATALYST=NO
+          bash -c ./periphery scan --strict SUPPORTS_MACCATALYST=NO
           
