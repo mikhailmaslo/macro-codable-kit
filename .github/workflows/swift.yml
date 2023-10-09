@@ -34,6 +34,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install essential build tools
+        run: |
+          apt-get update && apt-get install -y build-essential
+
       - name: Clone Periphery repository
         run: |
           git clone https://github.com/peripheryapp/periphery.git
