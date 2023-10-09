@@ -31,8 +31,23 @@ jobs:
       image: swift:5.9
     
     steps:
-      - uses: supplypike/setup-bin@v3
-        with:
-          uri: 'curl https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip'
-          name: 'periphery'
-          version: '2.16.0'
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download periphery
+        run: |
+          wget https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip
+
+      - name: Unzip binary
+        run: |
+          unzip periphery-2.16.0.zip
+
+      - name: Move binary to workspace
+        run: |
+          mv periphery $GITHUB_WORKSPACE/periphery
+
+      - name: Run periphery
+        run: |
+          cd $GITHUB_WORKSPACE
+          ./periphery scan --strict SUPPORTS_MACCATALYST=NO
+          
