@@ -49,9 +49,9 @@ jobs:
           apt-get update && apt-get install -y build-essential
           git clone --depth 1 --branch 2.16.0 https://github.com/peripheryapp/periphery.git
           cd periphery && make build_x86_64
-          mv "$(make show_bin_path)" $GITHUB_WORKSPACE/periphery
+          mv .build/release/periphery $GITHUB_WORKSPACE/periphery
 
       - name: Run periphery
         run: |
-          periphery scan --strict SUPPORTS_MACCATALYST=NO
+          ./periphery scan --strict SUPPORTS_MACCATALYST=NO
           
