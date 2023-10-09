@@ -50,6 +50,7 @@ jobs:
           git clone --depth 1 --branch 2.16.0 https://github.com/peripheryapp/periphery.git
           cd periphery && make build_x86_64
           mv .build/release/periphery $GITHUB_WORKSPACE/periphery
+          chmod +x $GITHUB_WORKSPACE/periphery
 
       - name: Run periphery
         run: |
