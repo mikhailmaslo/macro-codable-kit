@@ -36,7 +36,8 @@ jobs:
 
       - name: Download periphery
         run: |
-          curl -OL https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip
+          apt install wget
+          wget https://github.com/peripheryapp/periphery/releases/download/2.16.0/periphery-2.16.0.zip
 
       - name: Unzip binary
         run: |
