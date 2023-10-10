@@ -36,22 +36,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Cache periphery
-        uses: actions/cache@v3.3.2
-        id: cache-periphery
-        with:
-          path: "periphery"
-          key: "2.16.0"
-
-      - name: Install Perishery if needed
-        if: steps.cache-periphery.outputs.cache-hit != 'true'
-        run: >
-          apt-get update && apt-get install -y build-essential
-          git clone --depth 1 --branch 2.16.0 https://github.com/peripheryapp/periphery.git
-          cd periphery && make build_x86_64
-          mv .build/release/periphery $GITHUB_WORKSPACE/periphery
+      - uses: irgaly/setup-mint@v1
 
       - name: Run periphery
         run: |
-          ./periphery scan --strict SUPPORTS_MACCATALYST=NO
+          periphery scan --strict SUPPORTS_MACCATALYST=NO
           
