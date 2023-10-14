@@ -225,8 +225,7 @@ public extension CustomCodingEncoding {
         strategy: Strategy.Type
     ) throws
         where Strategy: ValueCodableStrategy,
-        Strategy.Value == T,
-        T: Encodable
+        Strategy.Value == T
     {
         let encoder = container.superEncoder(forKey: key)
         try strategy.encode(value: value, to: encoder)
@@ -240,7 +239,6 @@ public extension CustomCodingEncoding {
     ) throws
         where Strategy: ValueCodableStrategy,
         Strategy.Value == T.Wrapped,
-        T: Encodable,
         T: OptionalProtocol
     {
         guard let unwrappedValue = value.asOptional() else { return }

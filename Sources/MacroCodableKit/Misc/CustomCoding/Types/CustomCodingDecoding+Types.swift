@@ -747,8 +747,7 @@ public extension CustomCodingDecoding {
         strategy _: Strategy.Type
     ) throws -> T
         where Strategy: ValueCodableStrategy,
-        Strategy.Value == T,
-        T: Decodable
+        Strategy.Value == T
     {
         let valueDecoder = try container.superDecoder(forKey: key)
         return try Strategy.decode(from: valueDecoder)
@@ -762,7 +761,6 @@ public extension CustomCodingDecoding {
     ) throws -> T.Wrapped?
         where Strategy: ValueCodableStrategy,
         Strategy.Value == T.Wrapped,
-        T: Decodable,
         T: OptionalProtocol
     {
         if container.contains(key) {
@@ -782,8 +780,7 @@ public extension CustomCodingDecoding {
         where Strategy: ValueCodableStrategy,
         Strategy.Value == T,
         Provider: DefaultValueProvider,
-        Provider.DefaultValue == T,
-        T: Decodable
+        Provider.DefaultValue == T
     {
         do {
             return try decode(type, forKey: key, container: container, strategy: strategy)
@@ -805,7 +802,6 @@ public extension CustomCodingDecoding {
         Strategy.Value == T.Wrapped,
         Provider: DefaultValueProvider,
         Provider.DefaultValue == T.Wrapped,
-        T: Decodable,
         T: OptionalProtocol
     {
         try decode(T.Wrapped.self, forKey: key, container: container, strategy: strategy, provider: provider)
