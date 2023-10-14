@@ -5,16 +5,12 @@
 //  Created by Mikhail Maslo on 30.09.23.
 //
 
-/**
- A strategy for encoding and decoding a specific value type.
-
- - Note: The value type must conform to `Codable`.
-
- - SeeAlso: `ValueStrategy`
- */
-public protocol ValueCodableStrategy {
+/// A strategy for encoding and decoding a specific value type.
+///
+/// The value type must conform to `Codable`.
+public protocol ValueCodableStrategy<Value> {
     /// The type of value that this strategy encodes and decodes.
-    associatedtype Value: Codable
+    associatedtype Value
 
     /**
      Decodes a value of the associated type from the given decoder.
