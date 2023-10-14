@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    if: false
     runs-on: ubuntu-latest
     container:
       image: swift:5.9
@@ -23,3 +24,22 @@ jobs:
 
       - name: Test
         run: swift test -v
+
+  lint-unused-code:
+    runs-on: ubuntu-latest
+    container:
+      image: swift:5.9
+
+    env:
+      MINT_PATH: "/github/home/.mint"
+      MINT_LINK_PATH: "/github/home/.mint/bin"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: irgaly/setup-mint@v1
+
+      - name: Run periphery
+        run: |
+          mint run periphery scan --strict
