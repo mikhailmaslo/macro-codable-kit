@@ -30,15 +30,15 @@ jobs:
     container:
       image: swift:5.9
 
-    env:
-      version: "2.16.0"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - uses: irgaly/setup-mint@v1
+        env:
+          MINT_PATH: "$HOME/.mint"
+          MINT_LINK_PATH: "$HOME/.mint/bin"
 
       - name: Run periphery
         run: |
           periphery scan --strict SUPPORTS_MACCATALYST=NO
-          
