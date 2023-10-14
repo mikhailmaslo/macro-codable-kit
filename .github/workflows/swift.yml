@@ -39,6 +39,12 @@ jobs:
           MINT_PATH: "/github/home/.mint"
           MINT_LINK_PATH: "/github/home/.mint/bin"
 
+      - run: |
+          ls -l /github/home/.mint
+      
+      - run: |
+          ls -l /github/home/.mint/bin
+
       - name: Run periphery
         run: |
           /github/home/.mint/bin/periphery scan --strict SUPPORTS_MACCATALYST=NO
