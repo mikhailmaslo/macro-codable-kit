@@ -36,8 +36,8 @@ jobs:
 
       - uses: irgaly/setup-mint@v1
         env:
-          MINT_PATH: "$HOME/.mint"
-          MINT_LINK_PATH: "$HOME/.mint/bin"
+          MINT_PATH: "/github/home/.mint"
+          MINT_LINK_PATH: "/github/home/.mint/bin"
 
       - name: Run periphery
         run: |
