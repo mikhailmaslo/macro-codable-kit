@@ -41,4 +41,4 @@ jobs:
 
       - name: Run periphery
         run: |
-          mint run periphery scan --strict SUPPORTS_MACCATALYST=NO
+          mint run periphery scan --strict
