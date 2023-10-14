@@ -41,4 +41,4 @@ jobs:
 
       - name: Run periphery
         run: |
-          periphery scan --strict SUPPORTS_MACCATALYST=NO
+          /github/home/.mint/bin/periphery scan --strict SUPPORTS_MACCATALYST=NO
