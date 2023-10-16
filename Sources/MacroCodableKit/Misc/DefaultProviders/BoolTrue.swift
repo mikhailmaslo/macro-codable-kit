@@ -5,20 +5,10 @@
 //  Created by Mikhail Maslo on 26.09.23.
 //
 
-/**
- A typealias for `DefaultTrueValueProvider`.
-
- This typealias is used to provide a default value of `true` for booleans.
-
- - Note: This typealias conforms to `DefaultValueProvider`.
- */
+/// Provides a default `true` value for booleans in ``DefaultValue(_:)``.
 public typealias BoolTrue = DefaultTrueValueProvider
 
-/**
- A struct that provides a default value of `true` for booleans.
-
- This struct conforms to `DefaultValueProvider`.
- */
+/// A struct that provides a default value of `true` for booleans.
 public struct DefaultTrueValueProvider: DefaultValueProvider {
     /// The default value of `true`.
     public static var defaultValue: Bool { true }

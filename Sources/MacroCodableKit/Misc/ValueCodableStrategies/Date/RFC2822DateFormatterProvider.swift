@@ -8,16 +8,17 @@
 #if canImport(Foundation)
     import Foundation
 
-    /// A typealias for `DateFormatterStrategy` using `RFC2822DateFormatterProvider`.
+    /// Decodes and encodes `EEE, d MMM y HH:mm:ss zzz` date in ``ValueStrategy(_:)``
+    ///
+    /// Example: `Tue, 3 Oct 2023 10:15:30 GMT`
     public typealias RFC2822Date = DateFormatterStrategy<RFC2822DateFormatterProvider>
 
-    /**
-     A provider for `DateFormatter` with RFC2822 date format.
-
-     - Important: The date format used is "EEE, d MMM y HH:mm:ss zzz".
-     */
+    /// Provides `EEE, d MMM y HH:mm:ss zzz` date formatter
+    ///
+    /// - Note: Uses `+0` time zone
+    ///
+    /// Example: `2023-10-03T10:15:30.123+00:00`
     public struct RFC2822DateFormatterProvider: DateFormatterProvider {
-        /// The shared instance of `DateFormatter` with RFC2822 date format.
         public static let dateFormatter: DateFormatterProtocol = {
             let dateFormatter = DateFormatter()
             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)

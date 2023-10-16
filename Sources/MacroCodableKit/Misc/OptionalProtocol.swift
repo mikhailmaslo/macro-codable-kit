@@ -6,6 +6,8 @@
 //
 
 /// A protocol that represents an optional value.
+///
+/// This protocol is useful to handle optional types in decoding and encoding
 public protocol OptionalProtocol {
     associatedtype Wrapped
 
@@ -16,11 +18,6 @@ public protocol OptionalProtocol {
 }
 
 extension Optional: OptionalProtocol {
-    /**
-     Converts the optional value to an optional.
-
-     - Returns: The wrapped value if it exists, otherwise `nil`.
-     */
     public func asOptional() -> Wrapped? {
         switch self {
         case let .some(wrapped):

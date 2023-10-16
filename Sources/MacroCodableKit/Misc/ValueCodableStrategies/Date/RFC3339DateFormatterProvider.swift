@@ -8,23 +8,17 @@
 #if canImport(Foundation)
     import Foundation
 
+    /// Decodes and encodes `yyyy-MM-dd'T'HH:mm:ssZ` date in ``ValueStrategy(_:)``
+    ///
+    /// Example: `2023-10-03T10:15:30Z`
     public typealias RFC3339Date = DateFormatterStrategy<RFC3339DateFormatterProvider>
 
-    /**
-     A provider for `DateFormatter` instances that use the RFC3339 date format.
-
-     - Note: This provider is only available if `Foundation` can be imported.
-
-     - SeeAlso: `DateFormatterStrategy`
-     */
+    /// Provides `yyyy-MM-dd'T'HH:mm:ssZ` date formatter
+    ///
+    /// - Note: Uses `+0` time zone
+    ///
+    /// Example: `2023-10-03T10:15:30Z`
     public struct RFC3339DateFormatterProvider: DateFormatterProvider {
-        /**
-         The shared `DateFormatter` instance for RFC3339 date format.
-
-         - Note: The date format follows the RFC3339 standard: "yyyy-MM-dd'T'HH:mm:ssZ".
-
-         - Returns: A `DateFormatter` instance with the specified format.
-         */
         public static let dateFormatter: DateFormatterProtocol = {
             let dateFormatter = DateFormatter()
             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)

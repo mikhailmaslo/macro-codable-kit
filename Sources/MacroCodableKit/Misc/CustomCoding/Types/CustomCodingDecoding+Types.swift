@@ -60,6 +60,60 @@ public extension CustomCodingDecoding {
         }
     }
 
+    // MARK: - String
+
+    static func decode<K, Provider>(
+        _ type: String.Type,
+        forKey key: KeyedDecodingContainer<K>.Key,
+        container: KeyedDecodingContainer<K>,
+        provider _: Provider.Type
+    ) throws -> String
+        where Provider: DefaultValueProvider,
+        Provider.DefaultValue == String
+    {
+        do {
+            return try container.decode(type, forKey: key)
+        } catch {
+            logError(error)
+
+            return Provider.defaultValue
+        }
+    }
+
+    static func decode<K, Strategy>(
+        _: String.Type,
+        forKey key: KeyedDecodingContainer<K>.Key,
+        container: KeyedDecodingContainer<K>,
+        strategy _: Strategy.Type
+    ) throws -> String
+        where Strategy: ValueCodableStrategy,
+        Strategy.Value == String
+    {
+        let valueDecoder = try container.superDecoder(forKey: key)
+        return try Strategy.decode(from: valueDecoder)
+    }
+
+    static func decode<K, Provider, Strategy>(
+        _ type: String.Type,
+        forKey key: KeyedDecodingContainer<K>.Key,
+        container: KeyedDecodingContainer<K>,
+        strategy: Strategy.Type,
+        provider _: Provider.Type
+    ) throws -> String
+        where Strategy: ValueCodableStrategy,
+        Strategy.Value == String,
+        Provider: DefaultValueProvider,
+        Provider.DefaultValue == String
+    {
+        do {
+            return try decode(type, forKey: key, container: container, strategy: strategy)
+        } catch {
+            logError(error)
+
+            return Provider.defaultValue
+        }
+    }
+
     // MARK: - Double
 
     static func decode<K, Provider>(

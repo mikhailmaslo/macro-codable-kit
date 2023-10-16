@@ -5,22 +5,10 @@
 //  Created by Mikhail Maslo on 01.10.23.
 //
 
-/**
- A type alias for the default double zero value provider.
-
- - Note: This typealias provides a more convenient way to access the default double zero value provider.
-
- - SeeAlso: `DefaultDoubleZeroValueProvider`
- */
+/// Provides a default `0` value for doubles in ``DefaultValue(_:)``.
 public typealias DoubleZero = DefaultDoubleZeroValueProvider
 
-/**
- A struct that provides the default value for double zero.
-
- - Note: This struct conforms to the `DefaultValueProvider` protocol.
-
- - SeeAlso: `DefaultValueProvider`
- */
+/// A struct that provides a default value of `0` for doubles.
 public struct DefaultDoubleZeroValueProvider: DefaultValueProvider {
     /// The default value for double zero.
     public static var defaultValue: Double { 0 }

@@ -17,33 +17,6 @@
 
 // MARK: - Decoding
 
-/**
- A `CustomCodable` strategy designed for safely decoding dictionaries, particularly handling keys of type `String` or `Int`. `SafeDecoding` aims to provide robust decoding, gracefully handling errors during the decoding process, while also providing optional support for custom `KeyDecodingStrategy` when used with `JSONDecoder`.
-
- - Usage:
-    To utilize this strategy, annotate the property with `@CustomCoding(SafeDecoding)` and ensure that the parent type is annotated with `@Codable`, `@Decodable`, or `@Encodable` macros.
-
-    ```swift
-    @Codable
-    struct DictionaryExample: Equatable {
-        @CustomCoding(SafeDecoding)
-        var entries: [String: Element]
-    }
-    ```
-
- - Decoding:
-    During decoding, `SafeDecoding` first checks the type of the key. If it's a `String` or `Int`, the decoding proceeds, otherwise an error is thrown. It then creates a decoding container for the dictionary, iterates through the keys, and tries to decode each value. If a value fails to decode, it logs the error and continues to the next key, ensuring that all decodable values are captured.
-
- - Encoding:
-    Encoding with `SafeDecoding` follows the standard encoding process for dictionaries.
-
- - Custom `KeyDecodingStrategy` Support (Optional, requires Foundation):
-    When used alongside `JSONDecoder`, `SafeDecoding` supports custom `KeyDecodingStrategy`. It allows for handling different key decoding strategies during the decoding process, for example, converting snake_case keys to camelCase.
-
- - SeeAlso:
-    - `CustomCoding`
-    - `SafeDecoding`
- */
 public extension CustomCodingDecoding {
     private struct AnyDecodableValue: Decodable {}
     // Copy of https://github.com/apple/swift/blob/c0dc3173b6970466434770927aaaeaeb46f0cc10/stdlib/public/core/Codable.swift.gyb#L1974
@@ -62,6 +35,10 @@ public extension CustomCodingDecoding {
         }
     }
 
+    /// Decodes dictionary suppressing individual value which failed to decode.
+    ///
+    /// Valid key types are `String` and `Int`. It tries to decode each value. If a value fails to decode, it logs the error and continues to the next key.
+    /// Respects `JSONDecoder.KeyDecodingStrategy`
     static func safeDecoding<K, Key: Decodable, Value: Decodable>(
         _: [Key: Value].Type,
         forKey dictKey: KeyedDecodingContainer<K>.Key,
@@ -159,6 +136,10 @@ public extension CustomCodingDecoding {
         }
     }
 
+    /// Decodes dictionary if provided `key` exists suppressing individual values which failed to decode.
+    ///
+    /// Valid key types are `String` and `Int`. It tries to decode each value. If a value fails to decode, it logs the error and continues to the next key.
+    /// Respects `JSONDecoder.KeyDecodingStrategy`
     static func safeDecoding<K, Key: Decodable, Value: Decodable>(
         _: [Key: Value]?.Type,
         forKey dictKey: KeyedDecodingContainer<K>.Key,
@@ -175,6 +156,7 @@ public extension CustomCodingDecoding {
 // MARK: - Encoding
 
 public extension CustomCodingEncoding {
+    /// Default dictionary encoding
     static func safeDecoding<K, Key: Encodable, Value: Encodable>(
         _ value: [Key: Value],
         forKey key: KeyedEncodingContainer<K>.Key,
@@ -183,6 +165,7 @@ public extension CustomCodingEncoding {
         try container.encode(value, forKey: key)
     }
 
+    /// Default dictionary encoding for an optional value
     static func safeDecoding<K, Key: Encodable, Value: Encodable>(
         _ value: [Key: Value]?,
         forKey key: KeyedEncodingContainer<K>.Key,

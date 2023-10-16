@@ -5,36 +5,21 @@
 //  Created by Mikhail Maslo on 02.10.23.
 //
 
-/**
- A strategy for encoding and decoding Base64 data.
- 
- - Note: This strategy requires the `Foundation` framework.
- 
- - SeeAlso: `ValueCodableStrategy`
- */
 #if canImport(Foundation)
     import Foundation
 
-    /// A typealias for `Base64Strategy` to make it more readable.
+    /// Decodes base64 `String` into `Data` and encodes `Data` to base64 `String` in ``ValueStrategy(_:)``.
     public typealias Base64Data = Base64Strategy
 
-    /// A strategy for encoding and decoding Base64 data.
+    /// Decodes base64 `String` into `Data` and encodes `Data` to base64 `String`.
     public struct Base64Strategy: ValueCodableStrategy {
-        /// The raw value type for this strategy.
-        public typealias RawValue = String
-
-        /// The value type for this strategy.
         public typealias Value = Data
 
-        /**
-         Decodes a `Data` value from the given decoder.
-
-         - Parameter decoder: The decoder to use.
-
-         - Throws: `DecodingError.dataCorrupted` if the Base64 string is invalid.
-
-         - Returns: The decoded `Data` value.
-         */
+        /// Decodes a `Data` value from base64 `String`.
+        ///
+        /// - Throws: `DecodingError.dataCorrupted` if the Base64 string is invalid.
+        ///
+        /// - Returns: The decoded `Data` value from base64 String.
         public static func decode(from decoder: Decoder) throws -> Value {
             let container = try decoder.singleValueContainer()
             let base64Encoded = try container.decode(String.self)
@@ -47,14 +32,7 @@
             }
         }
 
-        /**
-         Encodes the given `Data` value to the given encoder.
-
-         - Parameter value: The `Data` value to encode.
-         - Parameter encoder: The encoder to use.
-
-         - Throws: An error if encoding fails.
-         */
+        /// Encodes the given `Data` value to the given encoder as base64 String.
         public static func encode(value: Value, to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             let base64EncodedString = value.base64EncodedString()

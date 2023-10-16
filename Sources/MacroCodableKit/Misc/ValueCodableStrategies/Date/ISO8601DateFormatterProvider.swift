@@ -10,27 +10,29 @@
 
     // MARK: - ISO8601Default
 
-    /// A default `DateFormatter` strategy for ISO8601 format.
+    /// Decodes and encodes `yyyy-MM-dd'T'HH:mm:ssXXX` date in ``ValueStrategy(_:)``
+    ///
+    /// Example: `2023-10-03T10:15:30+00:00`
     public typealias ISO8601Default = DateFormatterStrategy<ISO8601DefaultDateFormatterProvider>
 
-    /**
-     A provider for `ISO8601DateFormatter` instances with default format options.
-     */
+    /// Provides `yyyy-MM-dd'T'HH:mm:ssXXX` date formatter
+    ///
+    /// Example: `2023-10-03T10:15:30+00:00`
     public struct ISO8601DefaultDateFormatterProvider: DateFormatterProvider {
-        /// The shared `ISO8601DateFormatter` instance with default format options.
         public static let dateFormatter: DateFormatterProtocol = ISO8601DateFormatter()
     }
 
     // MARK: - ISO8601WithFullDate
 
-    /// A `DateFormatter` strategy for ISO8601 format with full date.
+    /// Decodes and encodes `yyyy-MM-dd` date in ``ValueStrategy(_:)``
+    ///
+    /// Example: `2023-10-03`
     public typealias ISO8601WithFullDate = DateFormatterStrategy<ISO8601FullDateDateFormatterProvider>
 
-    /**
-     A provider for `ISO8601DateFormatter` instances with full date format option.
-     */
+    /// Provides `yyyy-MM-dd` date formatter
+    ///
+    /// Example: `2023-10-03`
     public struct ISO8601FullDateDateFormatterProvider: DateFormatterProvider {
-        /// The shared `ISO8601DateFormatter` instance with full date format option.
         public static let dateFormatter: DateFormatterProtocol = {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = .withFullDate
@@ -40,14 +42,15 @@
 
     // MARK: - ISO8601WithFractionalSeconds
 
-    /// A `DateFormatter` strategy for ISO8601 format with fractional seconds.
+    /// Decodes and encodes `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` date in ``ValueStrategy(_:)``
+    ///
+    /// Example: `2023-10-03T10:15:30.123+00:00`
     public typealias ISO8601WithFractionalSeconds = DateFormatterStrategy<ISO8601WithFractionalSecondsDateFormatterProvider>
 
-    /**
-     A provider for `ISO8601DateFormatter` instances with internet date time and fractional seconds format options.
-     */
+    /// Provides `yyyy-MM-dd'T'HH:mm:ss.SSSXXX` date formatter
+    ///
+    /// Example: `2023-10-03T10:15:30.123+00:00`
     public struct ISO8601WithFractionalSecondsDateFormatterProvider: DateFormatterProvider {
-        /// The shared `ISO8601DateFormatter` instance with internet date time and fractional seconds format options.
         public static let dateFormatter: DateFormatterProtocol = {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]

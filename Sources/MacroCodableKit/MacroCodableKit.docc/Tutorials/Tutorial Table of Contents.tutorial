@@ -1,0 +1,10 @@
+@Tutorials(name: "MacroCodableKit") {
+    @Intro(title: "How to") {
+    }
+    
+    @Chapter(name: "How to create your own CustomCoding") {
+        @TutorialReference(tutorial: "doc:Create-your-own-CustomCoding")
+        
+        @Image(source: custom-coding)
+    }
+}
