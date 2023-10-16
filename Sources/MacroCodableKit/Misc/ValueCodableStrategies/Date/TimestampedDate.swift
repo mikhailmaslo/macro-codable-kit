@@ -8,25 +8,28 @@
 #if canImport(Foundation)
     import Foundation
 
+    /// Decodes and encodes unix timestamp in ``ValueStrategy(_:)``.
+    ///
+    /// Works with `String` and `Double` representations.
+    ///
+    /// Example: `1696291200.0` or `"1696291200.0"`
     public typealias TimestampedDate = TimestampStrategy
-    /**
-     A strategy for encoding and decoding `Date` values as timestamps.
 
-     - SeeAlso: `ValueCodableStrategy`
-     */
+    /// Decodes and encodes unix timestamp in ``ValueStrategy(_:)``.
+    ///
+    /// Works with `String` and `Double` representations.
+    ///
+    /// Example: `1696291200.0` or `"1696291200.0"`
     public struct TimestampStrategy: ValueCodableStrategy {
-        /// The type of value that this strategy encodes and decodes.
         public typealias Value = Date
 
-        /**
-         Decodes a `Date` value from the given decoder.
-
-         - Parameter decoder: The decoder to read data from.
-
-         - Throws: An error if the decoding process fails.
-
-         - Returns: The decoded `Date` value.
-         */
+        /// Decodes a `Date` value from the given decoder.
+        ///
+        /// - Parameter decoder: The decoder to read data from.
+        ///
+        /// - Throws: An error if coudn't decode either `String` or `TimeInterval` from decoder
+        ///
+        /// - Returns: The decoded `Date` value.
         public static func decode(from decoder: Decoder) throws -> Value {
             let container = try decoder.singleValueContainer()
             let timeInterval: TimeInterval?
@@ -48,14 +51,7 @@
             return Date(timeIntervalSince1970: timeInterval)
         }
 
-        /**
-         Encodes the given `Date` value into the given encoder.
-
-         - Parameter value: The `Date` value to encode.
-         - Parameter encoder: The encoder to write data to.
-
-         - Throws: An error if the encoding process fails.
-         */
+        /// Encodes the given `Date` value into the given encoder as `TimeInterval`.
         public static func encode(value: Value, to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             try container.encode(value.timeIntervalSince1970)

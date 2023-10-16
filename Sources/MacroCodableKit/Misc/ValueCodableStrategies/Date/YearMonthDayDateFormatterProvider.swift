@@ -8,18 +8,15 @@
 #if canImport(Foundation)
     import Foundation
 
-    /// A typealias for `DateFormatterStrategy` using `YearMonthDayDateFormatterProvider`.
+    /// Decodes and encodes `yyyy-MM-dd` date in ``ValueStrategy(_:)``
+    ///
+    /// Example: `2023-10-03`
     public typealias YearMonthDayDate = DateFormatterStrategy<YearMonthDayDateFormatterProvider>
 
-    /**
-     A provider for `DateFormatter` with the format "yyyy-MM-dd".
-
-     This provider is specifically designed for formatting dates in the "yyyy-MM-dd" format.
-
-     - SeeAlso: `DateFormatterStrategy`, `DateFormatterProvider`
-     */
+    /// Provides `yyyy-MM-dd` date formatter
+    ///
+    /// Example: `2023-10-03`
     public struct YearMonthDayDateFormatterProvider: DateFormatterProvider {
-        /// The shared `DateFormatter` instance.
         public static let dateFormatter: DateFormatterProtocol = {
             let dateFormatter = DateFormatter()
             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)

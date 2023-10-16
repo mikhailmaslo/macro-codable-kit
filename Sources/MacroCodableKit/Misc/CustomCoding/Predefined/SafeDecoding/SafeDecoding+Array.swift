@@ -7,77 +7,21 @@
 
 // MARK: - Decoding
 
-/**
- A `CustomCodable` strategy designed for safely decoding arrays, while gracefully handling decoding errors during the process. `SafeDecoding` provides a robust way to decode arrays, ensuring that decodable elements are captured and errors are logged for further inspection.
-
- - Usage:
-    To utilize this strategy, annotate the property with `@CustomCoding(SafeDecoding)` and ensure that the parent type is annotated with `@Codable`, `@Decodable`, or `@Encodable` macros.
-
-    ```swift
-    @Codable
-    struct ArrayExample: Equatable {
-        @CustomCoding(SafeDecoding)
-        var elements: [Element]
-    }
-    ```
-
- - Decoding:
-    During decoding, `SafeDecoding` attempts to decode each element in the array. If an element fails to decode, it logs the error and continues to the next element, ensuring that all decodable elements are captured.
-
-    ```swift
-    static func safeDecoding<K, Element: Decodable>(
-        _: [Element].Type,
-        forKey key: KeyedDecodingContainer<K>.Key,
-        container: KeyedDecodingContainer<K>
-    ) throws -> [Element] { ... }
-    ```
-
-    For decoding optional arrays, it checks if the key is present, and if so, proceeds to decode the array. If the key is not present, it returns `nil`.
-
-    ```swift
-    static func safeDecoding<K, Element: Decodable>(
-        _: [Element]?.Type,
-        forKey key: KeyedDecodingContainer<K>.Key,
-        container: KeyedDecodingContainer<K>
-    ) throws -> [Element]? { ... }
-    ```
-
- - Encoding:
-    Encoding with `SafeDecoding` follows the standard encoding process for arrays.
-
-    ```swift
-    static func safeDecoding<K, Element: Encodable>(
-        _ value: [Element],
-        forKey key: KeyedEncodingContainer<K>.Key,
-        container: inout KeyedEncodingContainer<K>
-    ) throws { ... }
-
-    static func safeDecoding<K, Element: Encodable>(
-        _ value: [Element]?,
-        forKey key: KeyedEncodingContainer<K>.Key,
-        container: inout KeyedEncodingContainer<K>
-    ) throws { ... }
-    ```
-
- - SeeAlso:
-    - `CustomCoding`
-    - `SafeDecoding`
- */
 public extension CustomCodingDecoding {
     private struct AnyDecodableValue: Decodable {}
 
-    /**
-     Safely decodes an array of elements for a given key.
-
-     - Parameters:
-       - _: The type of the array elements.
-       - forKey: The key to decode the array.
-       - container: The container to decode from.
-
-     - Throws: An error if decoding fails.
-
-     - Returns: An array of decoded elements.
-     */
+    /// Decodes array, suppressing individual element which failed to decode.
+    ///
+    /// It logs the error and continues to the next element, ensuring that all decodable elements are captured.
+    ///
+    /// - Parameters:
+    ///     - _: The type of the array elements.
+    ///     - forKey: The key to decode the array.
+    ///     - container: The container to decode from.
+    ///
+    /// - Throws: An error if decoding fails.
+    ///
+    /// - Returns: An optional array of decoded elements, or `nil` if the key is not present.
     static func safeDecoding<K, Element: Decodable>(
         _: [Element].Type,
         forKey key: KeyedDecodingContainer<K>.Key,
@@ -100,18 +44,18 @@ public extension CustomCodingDecoding {
         return elements
     }
 
-    /**
-     Safely decodes an optional array of elements for a given key.
-
-     - Parameters:
-       - _: The type of the array elements.
-       - forKey: The key to decode the array.
-       - container: The container to decode from.
-
-     - Throws: An error if decoding fails.
-
-     - Returns: An optional array of decoded elements, or `nil` if the key is not present.
-     */
+    /// Decodes array, suppressing individual element which failed to decode if `key` exists.
+    ///
+    /// It logs the error and continues to the next element, ensuring that all decodable elements are captured.
+    ///
+    /// - Parameters:
+    ///     - _: The type of the array elements.
+    ///     - forKey: The key to decode the array.
+    ///     - container: The container to decode from.
+    ///
+    /// - Throws: An error if decoding fails.
+    ///
+    /// - Returns: An optional array of decoded elements, or `nil` if the key is not present.
     static func safeDecoding<K, Element: Decodable>(
         _: [Element]?.Type,
         forKey key: KeyedDecodingContainer<K>.Key,
@@ -128,16 +72,7 @@ public extension CustomCodingDecoding {
 // MARK: - Encoding
 
 public extension CustomCodingEncoding {
-    /**
-     Default encode implementation of a dictionary
-
-     - Parameters:
-       - value: The array of elements to encode.
-       - forKey: The key to encode the array.
-       - container: The container to encode into.
-
-     - Throws: An error if encoding fails.
-     */
+    /// Default encode implementation of an array
     static func safeDecoding<K, Element: Encodable>(
         _ value: [Element],
         forKey key: KeyedEncodingContainer<K>.Key,
@@ -146,16 +81,7 @@ public extension CustomCodingEncoding {
         try container.encode(value, forKey: key)
     }
 
-    /**
-     Default encode implementation of a dictionary
-
-     - Parameters:
-       - value: The optional array of elements to encode.
-       - forKey: The key to encode the array.
-       - container: The container to encode into.
-
-     - Throws: An error if encoding fails.
-     */
+    /// Default encode implementation of an optional array
     static func safeDecoding<K, Element: Encodable>(
         _ value: [Element]?,
         forKey key: KeyedEncodingContainer<K>.Key,

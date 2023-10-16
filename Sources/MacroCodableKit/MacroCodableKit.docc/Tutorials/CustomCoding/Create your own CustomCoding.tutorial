@@ -1,0 +1,163 @@
+@Metadata {
+    @PageImage(purpose: card, source: custom-coding)
+}
+
+@Tutorial(time: 15) {
+    @Intro(title: "Building Custom Codable Strategies with Swift") {
+        This tutorial guides you through creation of your own ``CustomCoding(_:)`` strategy. You will implement `OmitEmpty` which works pretty much the same as [omitempty](https://www.sohamkamani.com/golang/omitempty/) in Go. Since `omitempty` affects only encoding, we will implement only this part
+        
+        @Image(source: custom-coding)
+    }
+
+    @Section(title: "Define Core Types") {
+        @ContentAndMedia {
+            Defining core types for `OmitEmpty` strategy: a custom coding name and a an "emptyness" check for a given type.
+        }
+
+        @Steps {
+            @Step {
+                Create a new file named `OmitEmpty.swift`
+            }
+            
+            @Step {
+                Define a struct `OmitEmpty` inside this file, it should conform to ``CustomDecodingName``.
+
+                @Code(name: "OmitEmpty.swift", file: create-your-own-customcoding-01-01.swift)
+            }
+            
+            @Step {
+                Create a protocol `OmitEmpty_IsEmptyCheck` which provides a type emptyness check.
+
+                @Code(name: "OmitEmpty.swift", file: create-your-own-customcoding-01-02.swift)
+            }
+            
+            
+        }
+    }
+
+    @Section(title: "Implementing Encoding") {
+        @ContentAndMedia {
+            Implement encoding function to describe how encoding of a property annotated with `@CustomCoding(OmitEmpty)` should be handled.
+        }
+
+        @Steps {
+            @Step {
+                Add a file `CustomCodingEncoding+OmitEmpty.swift`
+            }
+            
+            @Step {
+                Create an extension of ``CustomCodingEncoding`` 
+                
+                @Code(name: "CustomCodingEncoding+OmitEmpty.swift", file: create-your-own-customcoding-02-01.swift)
+            }
+            
+            @Step {
+                Define `omitEmpty` function, which derives from `OmitEmpty`, to handle encoding of an arbiterary type, 
+                
+                @Code(name: "CustomCodingEncoding+OmitEmpty.swift", file: create-your-own-customcoding-02-02.swift)
+            }
+            
+            @Step {
+                Implement `omitEmpty` logic
+                
+                @Code(name: "CustomCodingEncoding+OmitEmpty.swift", file: create-your-own-customcoding-02-03.swift)
+            }
+            
+            @Step {
+                Support optional handling. `nil` is considered to be "empty"
+                
+                @Code(name: "CustomCodingEncoding+OmitEmpty.swift", file: create-your-own-customcoding-02-04.swift)
+            }
+        }
+    }
+        
+    @Section(title: "Handle Decoding") {
+        @ContentAndMedia {
+            A type using `OmitEmpty` can use ``Codable()`` thus requiring us to provide decoding imlementation as well, so let's do it here  
+        }
+        
+        Note something 
+        
+        @Steps {
+            @Step {
+                Add a file `CustomCodingDecoding+OmitEmpty.swift`
+            }
+            
+            @Step {
+                In the same way create as with encoding an extension of ``CustomCodingDecoding``
+                
+                @Code(name: "CustomCodingDecoding+OmitEmpty.swift", file: create-your-own-customcoding-03-01.swift)
+            }
+            
+            @Step {
+                Add `omitEmpty` function to handle decoding
+                
+                @Code(name: "CustomCodingDecoding+OmitEmpty.swift", file: create-your-own-customcoding-03-02.swift)
+            }
+            
+            @Step {
+                Use default imlementation of `Decodable`
+                
+                @Code(name: "CustomCodingDecoding+OmitEmpty.swift", file: create-your-own-customcoding-03-03.swift)
+            }
+            
+            @Step {
+                Support optionals with default `Decodable` implementation
+                
+                @Code(name: "CustomCodingDecoding+OmitEmpty.swift", file: create-your-own-customcoding-03-04.swift)
+            }
+        }
+    }
+        
+    @Section(title: "Conform to `OmitEmptyCheckable`") {
+        @ContentAndMedia {
+            Now, we need to conform `OmitEmptyCheckable` on concrete types: `Bool`, `String`, `Int`, etc
+        }
+        
+        @Steps {
+            @Step {            
+                To make things simplier, we will define conformances in existing file `OmitEmpty.swift`
+                
+                @Code(name: "CustomCodingDecoding+OmitEmpty.swift", file: create-your-own-customcoding-04-01.swift)
+            }
+            
+            @Step {
+                Make conformances for `Bool`, `String`, `Int` and others
+                
+                @Code(name: "CustomCodingDecoding+OmitEmpty.swift", file: create-your-own-customcoding-04-02.swift)
+            }
+        }
+    }
+        
+    @Section(title: "Usage") {
+        @ContentAndMedia {
+            Let's test our `OmitEmpty` implementation
+        }
+    
+        @Steps {
+            @Step {
+                Let's assume you have a `User` struct you need to send
+                
+                @Code(name: "User.swift", file: create-your-own-customcoding-05-01.swift)
+            }
+            
+            @Step {
+                Conform to Encodable
+                
+                @Code(name: "User.swift", file: create-your-own-customcoding-05-02.swift)
+            }
+            
+            @Step {
+                Add `OmitEmpty` where it's needed
+                
+                @Code(name: "User.swift", file: create-your-own-customcoding-05-03.swift)
+            }
+            
+            @Step {
+                Finally you can use `JSONEncoder` to encode!
+                
+                @Code(name: "User.swift", file: create-your-own-customcoding-05-04.swift)
+            }
+        }
+    }
+}
