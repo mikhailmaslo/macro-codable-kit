@@ -15,9 +15,17 @@ struct FunctionBuilder: CodeBuildable {
 
     let name: String
     let parameters: Params
+    let isOptionalTry: Bool
+
+    init(name: String, parameters: Params, isOptionalTry: Bool = false) {
+        self.name = name
+        self.parameters = parameters
+        self.isOptionalTry = isOptionalTry
+    }
 
     func build() -> String {
-        "try \(name)(\(parameters.map { ($0.0.map { "\($0): " } ?? "") + $0.1 }.joined(separator: ",")))"
+        let tryKeyword = isOptionalTry ? "try?" : "try"
+        return "\(tryKeyword) \(name)(\(parameters.map { ($0.0.map { "\($0): " } ?? "") + $0.1 }.joined(separator: ",")))"
     }
 }
 

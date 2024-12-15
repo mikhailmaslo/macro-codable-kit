@@ -73,7 +73,7 @@ final class AllOfCodableMacroTests: XCTestCase {
                 extension Example__testing__: Decodable, Encodable {
                     init(from decoder: Decoder) throws {
                         let container = try decoder.singleValueContainer()
-                        self.brand = try container.decodeIfPresent(Brand.self)
+                        self.brand = try? container.decode(Brand.self)
                         self.company = try container.decode(Company.self)
                     }
                     func encode(to encoder: Encoder) throws {
