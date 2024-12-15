@@ -118,17 +118,23 @@ extension DecodableBuilder {
                 (nil, type.typeDescription(preservingOptional: false)),
             ]
 
+            let name: String
             switch strategy {
             case .singleValue:
-                break
+                function = FunctionBuilder(
+                    name: "container.decode",
+                    parameters: parameters,
+                    isOptionalTry: type.isOptional
+                )
             case .codingKeys:
+                name = type.isOptional ? "container.decodeIfPresent" : "container.decode"
                 parameters.append(("forKey", ".\(identifier)"))
-            }
 
-            function = FunctionBuilder(
-                name: type.isOptional ? "container.decodeIfPresent" : "container.decode",
-                parameters: parameters
-            )
+                function = FunctionBuilder(
+                    name: name,
+                    parameters: parameters
+                )
+            }
         }
 
         return DecodableBuilder.BuildingData.Item(identifier: identifier, function: function.build())
